@@ -81,4 +81,113 @@ function renderPoster() {
     }
 
     // 节选 / 想说的话（可选，稍微截断一点防止太长撑爆）
-    if (item.text
+    if (item.text) {
+      const excerptEl = document.createElement("div");
+      excerptEl.className = "month-excerpt";
+      const maxLen = 80;
+      const txt =
+        item.text.length > maxLen
+          ? item.text.slice(0, maxLen) + "..."
+          : item.text;
+      excerptEl.textContent = txt;
+      content.appendChild(excerptEl);
+    }
+
+    row.appendChild(label);
+    row.appendChild(dot);
+    row.appendChild(content);
+    monthsContainer.appendChild(row);
+  });
+}
+
+// 左侧“已添加月份”列表
+function renderMonthList() {
+  const list = document.getElementById("monthList");
+  list.innerHTML = "";
+  if (data.months.length === 0) return;
+
+  data.months.forEach((item) => {
+    const row = document.createElement("div");
+    row.className = "month-item-row";
+
+    const titlePreview = item.title || "未命名记录";
+    const textSnippet = item.text
+      ? item.text.slice(0, 12) + (item.text.length > 12 ? "..." : "")
+      : "";
+
+    const span = document.createElement("span");
+    span.textContent = `${item.month || "（未填月份）"}：${titlePreview}${
+      textSnippet ? "｜" + textSnippet : ""
+    }`;
+
+    const btn = document.createElement("button");
+    btn.className = "btn-remove";
+    btn.textContent = "删除";
+    btn.addEventListener("click", () => {
+      data.months = data.months.filter((m) => m.id !== item.id);
+      renderMonthList();
+      renderPoster();
+    });
+
+    row.appendChild(span);
+    row.appendChild(btn);
+    list.appendChild(row);
+  });
+}
+
+// 绑定基本字段输入事件
+function bindBaseFields() {
+  const inputs = document.querySelectorAll("[data-field]");
+  inputs.forEach((el) => {
+    const key = el.dataset.field;
+    el.value = data[key] || "";
+    el.addEventListener("input", () => {
+      data[key] = el.value.trim();
+      renderPoster();
+    });
+  });
+}
+
+// 添加月份记录
+function bindMonthForm() {
+  const form = document.getElementById("monthForm");
+  const monthInput = document.getElementById("monthName");
+  const titleInput = document.getElementById("monthTitle");
+  const tagsInput = document.getElementById("monthTags");
+  const textInput = document.getElementById("monthText");
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const month = monthInput.value.trim();
+    const title = titleInput.value.trim();
+    const tags = tagsInput.value.trim();
+    const text = textInput.value.trim();
+
+    if (!month) return; // 没填月份就不添加
+
+    data.months.push({
+      id: Date.now() + Math.random(),
+      month,
+      title,
+      tags,
+      text,
+    });
+
+    monthInput.value = "";
+    titleInput.value = "";
+    tagsInput.value = "";
+    textInput.value = "";
+
+    renderMonthList();
+    renderPoster();
+  });
+}
+
+// 初始化
+document.addEventListener("DOMContentLoaded", () => {
+  bindBaseFields();
+  bindMonthForm();
+  renderPoster();
+  renderMonthList();
+});
+
