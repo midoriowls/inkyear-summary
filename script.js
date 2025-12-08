@@ -44,7 +44,7 @@ function renderPoster() {
     const row = document.createElement("div");
     row.className = "month-row";
 
-    // 左侧：月份 + 想说的话
+    // 左侧：月份 + 代表作 + tag + 想说的话
     const left = document.createElement("div");
     left.className = "month-left";
 
@@ -53,26 +53,11 @@ function renderPoster() {
     label.textContent = item.month;
     left.appendChild(label);
 
-    if (item.note) {
-      const noteEl = document.createElement("div");
-      noteEl.className = "month-note";
-      noteEl.textContent = item.note;
-      left.appendChild(noteEl);
-    }
-
-    // 中间圆点
-    const dot = document.createElement("div");
-    dot.className = "month-dot";
-
-    // 右侧：标题 + tag + 正文
-    const right = document.createElement("div");
-    right.className = "month-right";
-
     if (item.title) {
       const titleEl = document.createElement("div");
       titleEl.className = "month-title";
       titleEl.textContent = item.title;
-      right.appendChild(titleEl);
+      left.appendChild(titleEl);
     }
 
     const tagText = (item.tags || "").trim();
@@ -88,9 +73,23 @@ function renderPoster() {
           pill.textContent = t;
           tagsWrap.appendChild(pill);
         });
-      right.appendChild(tagsWrap);
+      left.appendChild(tagsWrap);
     }
 
+    if (item.note) {
+      const noteEl = document.createElement("div");
+      noteEl.className = "month-note";
+      noteEl.textContent = item.note;
+      left.appendChild(noteEl);
+    }
+
+    // 中间圆点
+    const dot = document.createElement("div");
+    dot.className = "month-dot";
+
+    // 右侧：正文
+    const right = document.createElement("div");
+    right.className = "month-right";
     if (item.write) {
       const writeEl = document.createElement("div");
       writeEl.className = "month-write";
@@ -200,3 +199,4 @@ document.addEventListener("DOMContentLoaded", () => {
   renderPoster();
   renderMonthList();
 });
+
