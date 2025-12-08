@@ -123,3 +123,9 @@ document.addEventListener("change", (e) => {
 document.addEventListener("input", (e) => {
   if (e.target.matches("[data-bind]")) updatePreview();
 });
+
+
+// 实时输入刷新
+document.addEventListener("input", (e) => {
+  if (e.target.matches("[data-bind]")) updatePreview();
+});
