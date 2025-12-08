@@ -1,131 +1,138 @@
-// 默认文本
-const defaults = {
-  year: "2024",
-  penname: "不羡仙",
-  title: "在修文与截稿线之间摇摆的一年",
-  tags: "同人 文手 2024",
-  worksCount: "12",
+// 用一个对象存储当前数据
+const data = {
+  year: new Date().getFullYear().toString(),
+  penName: "不羡仙",
   totalWords: "320,000",
-  highlightTitle: "《开封府地契》",
-  highlightCP: "赵光义 x 原创少侠",
-  selfComment: "这一年写得跌跌撞撞，但也收到了很多意想不到的喜欢。",
-  readerComment: "“谢谢你写了这样一篇故事，让我在糟糕的一周里睡得很好。”",
+  tags: "同人 文手 年度总结",
+  reflection: "这一年写得跌跌撞撞，但也收到了很多意想不到的喜欢。",
+  months: [
+    // { id, month, text }
+  ],
 };
 
-function updatePreview() {
-  const inputs = document.querySelectorAll("[data-bind]");
+// 渲染整张海报
+function renderPoster() {
+  // 年份 & 基本信息
+  document.getElementById("pv-year").textContent = data.year || "2025";
+  document.getElementById("pv-penName").textContent = data.penName || "不羡仙";
+  document.getElementById("pv-totalWords").textContent =
+    data.totalWords || "320,000";
+  document.getElementById("pv-reflection").textContent =
+    data.reflection || "这一年写得跌跌撞撞，但也收到了很多意想不到的喜欢。";
 
-  inputs.forEach((el) => {
-    const key = el.dataset.bind;
-    const value = el.value.trim();
-    const text = value || defaults[key];
+  // 标签
+  const tagsContainer = document.getElementById("pv-tags");
+  tagsContainer.innerHTML = "";
+  const tags = (data.tags || "").split(/[,，\s]+/).filter(Boolean);
+  if (tags.length === 0) {
+    tags.push("同人", "文手", data.year || "2025");
+  }
+  tags.forEach((tag) => {
+    const span = document.createElement("span");
+    span.className = "tag-pill";
+    span.textContent = tag;
+    tagsContainer.appendChild(span);
+  });
 
-    switch (key) {
-      case "year":
-        document.getElementById("pv-year").textContent = text;
-        break;
-      case "penname":
-        document.getElementById("pv-penname").textContent = text;
-        break;
-      case "title":
-        document.getElementById("pv-title").textContent = text;
-        break;
-      case "tags":
-        const container = document.getElementById("pv-tags");
-        container.innerHTML = "";
-        text.split(/[,，\s]+/).filter(Boolean).forEach((tag) => {
-          const span = document.createElement("span");
-          span.className = "chip";
-          span.textContent = tag;
-          container.appendChild(span);
-        });
-        break;
-      case "worksCount":
-        document.getElementById("pv-worksCount").textContent = text;
-        break;
-      case "totalWords":
-        document.getElementById("pv-totalWords").textContent = text;
-        break;
-      case "highlightTitle":
-        document.getElementById("pv-highlightTitle").textContent = text;
-        break;
-      case "highlightCP":
-        document.getElementById("pv-highlightCP").textContent = text;
-        break;
-      case "selfComment":
-        document.getElementById("pv-selfComment").textContent = text;
-        break;
-      case "readerComment":
-        document.getElementById("pv-readerComment").textContent = text;
-        break;
-    }
+  // 月份时间线
+  const monthsContainer = document.getElementById("pv-months");
+  monthsContainer.innerHTML = "";
+  data.months.forEach((item) => {
+    const row = document.createElement("div");
+    row.className = "month-row";
+
+    const label = document.createElement("div");
+    label.className = "month-label";
+    label.textContent = item.month || "";
+
+    const dot = document.createElement("div");
+    dot.className = "month-dot";
+
+    const text = document.createElement("div");
+    text.className = "month-text";
+    text.textContent = item.text || "";
+
+    row.appendChild(label);
+    row.appendChild(dot);
+    row.appendChild(text);
+    monthsContainer.appendChild(row);
   });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  updatePreview();
+// 左侧“已添加月份”列表
+function renderMonthList() {
+  const list = document.getElementById("monthList");
+  list.innerHTML = "";
+  if (data.months.length === 0) return;
 
-  // 年份按钮
-  const yearButtons = document.querySelectorAll(".year-btn");
-  const yearInput = document.querySelector('[data-bind="year"]');
+  data.months.forEach((item) => {
+    const row = document.createElement("div");
+    row.className = "month-item-row";
 
-  yearButtons.forEach((btn) => {
+    const span = document.createElement("span");
+    span.textContent = `${item.month}：${item.text.slice(0, 20)}${
+      item.text.length > 20 ? "..." : ""
+    }`;
+
+    const btn = document.createElement("button");
+    btn.className = "btn-remove";
+    btn.textContent = "删除";
     btn.addEventListener("click", () => {
-      const year = btn.dataset.year;
-      yearInput.value = year;
-      updatePreview();
-      yearButtons.forEach((b) => b.classList.remove("pill-secondary"));
-      btn.classList.add("pill-secondary");
+      data.months = data.months.filter((m) => m.id !== item.id);
+      renderMonthList();
+      renderPoster();
+    });
+
+    row.appendChild(span);
+    row.appendChild(btn);
+    list.appendChild(row);
+  });
+}
+
+// 绑定基本字段输入事件
+function bindBaseFields() {
+  const inputs = document.querySelectorAll("[data-field]");
+  inputs.forEach((el) => {
+    const key = el.dataset.field;
+    // 初始化成默认值
+    el.value = data[key] || "";
+    el.addEventListener("input", () => {
+      data[key] = el.value.trim();
+      renderPoster();
     });
   });
+}
 
-  // 主题切换
-  const themeSelect = document.getElementById("themeSelect");
-  themeSelect.addEventListener("change", () => {
-    document.body.classList.remove("theme-ink", "theme-rose", "theme-night");
-    document.body.classList.add("theme-" + themeSelect.value);
+// 添加月份记录
+function bindMonthForm() {
+  const form = document.getElementById("monthForm");
+  const monthInput = document.getElementById("monthName");
+  const textInput = document.getElementById("monthText");
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const month = monthInput.value.trim();
+    const text = textInput.value.trim();
+    if (!month || !text) return;
+
+    data.months.push({
+      id: Date.now() + Math.random(),
+      month,
+      text,
+    });
+
+    monthInput.value = "";
+    textInput.value = "";
+
+    renderMonthList();
+    renderPoster();
   });
+}
 
-  // 版式切换
-  const layoutSelect = document.getElementById("layoutSelect");
-  const card = document.getElementById("previewCard");
-
-  layoutSelect.addEventListener("change", () => {
-    if (layoutSelect.value === "compact") {
-      card.classList.add("card--compact");
-    } else {
-      card.classList.remove("card--compact");
-    }
-  });
-});
-
-// 隐藏功能
-document.addEventListener("change", (e) => {
-  if (!e.target.matches(".toggle")) return;
-  const key = e.target.dataset.target;
-  const visible = e.target.checked;
-
-  const map = {
-    worksCount: ".stat-works",
-    totalWords: ".stat-words",
-    selfComment: ".block-self",
-    readerComment: ".block-reader",
-  };
-
-  const selector = map[key];
-  if (selector) {
-    const el = document.querySelector(selector);
-    if (el) el.style.display = visible ? "" : "none";
-  }
-});
-
-// 实时输入刷新
-document.addEventListener("input", (e) => {
-  if (e.target.matches("[data-bind]")) updatePreview();
-});
-
-
-// 实时输入刷新
-document.addEventListener("input", (e) => {
-  if (e.target.matches("[data-bind]")) updatePreview();
+// 初始化
+document.addEventListener("DOMContentLoaded", () => {
+  bindBaseFields();
+  bindMonthForm();
+  renderPoster();
+  renderMonthList();
 });
