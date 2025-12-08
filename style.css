@@ -57,10 +57,9 @@ body {
 .pill {
   border-radius: 999px;
   padding: 0.35rem 0.85rem;
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   border: 1px solid transparent;
   cursor: pointer;
-  white-space: nowrap;
 }
 
 .pill-secondary {
@@ -78,6 +77,14 @@ body {
 .pill-primary {
   background: #111827;
   color: #f9fafb;
+}
+
+.pill-select {
+  background: #f9fafb;
+  color: #4b5563;
+  border: 1px solid #e5e7eb;
+  padding-right: 1.3rem;
+  border-radius: 999px;
 }
 
 /* 布局 */
@@ -161,7 +168,6 @@ body {
   background: #fdfcf9;
   border-radius: 1rem;
   border: 1px solid #e5e7eb;
-  box-shadow: 0 15px 35px rgba(15, 23, 42, 0.12);
   padding: 1.3rem 1.4rem;
   display: flex;
   flex-direction: column;
@@ -181,9 +187,6 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 0.5rem;
-  position: relative;
-  z-index: 1;
 }
 
 .card-year {
@@ -199,24 +202,18 @@ body {
 .card-tag {
   font-size: 0.6rem;
   letter-spacing: 0.15em;
-  text-transform: uppercase;
   color: #9ca3af;
 }
 
 .card-penname {
   margin-top: 0.25rem;
   font-size: 0.8rem;
-  color: #4b5563;
 }
 
 .card-title {
   margin-top: 0.6rem;
   font-size: 1rem;
   font-weight: 600;
-  line-height: 1.4;
-  color: #111827;
-  position: relative;
-  z-index: 1;
 }
 
 .card-tags {
@@ -264,7 +261,6 @@ body {
 .highlight-label {
   font-size: 0.7rem;
   color: #9ca3af;
-  letter-spacing: 0.18em;
   text-transform: uppercase;
 }
 
@@ -303,6 +299,87 @@ body {
   text-align: right;
 }
 
+/* ---------- 版式 B（compact） ---------- */
+
+.card.card--compact {
+  aspect-ratio: 4 / 3;
+  padding: 1rem 1.2rem;
+}
+
+.card.card--compact .card-title {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.card.card--compact .card-tags {
+  justify-content: center;
+}
+
+.card.card--compact .card-stats {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 0.6rem;
+}
+
+/* ---------- 主题：玫瑰 ---------- */
+
+body.theme-rose .logo {
+  border-color: #9f1239;
+  color: #9f1239;
+}
+
+body.theme-rose .section-title {
+  color: #9f1239;
+}
+
+body.theme-rose .card-year {
+  color: #b91c1c;
+}
+
+body.theme-rose .chip {
+  border-color: #ffe4e6;
+  background: #fff1f2;
+  color: #be123c;
+}
+
+/* ---------- 主题：夜间 ---------- */
+
+body.theme-night {
+  background: #020617;
+  color: #e5e7eb;
+}
+
+body.theme-night .editor {
+  background: #020617;
+  color: #e5e7eb;
+}
+
+body.theme-night .topbar {
+  background: #020617ee;
+  border-bottom-color: #1e293b;
+}
+
+body.theme-night .card {
+  background: #020617;
+  border-color: #1e293b;
+}
+
+body.theme-night .card::before {
+  border-color: #1e293b;
+}
+
+body.theme-night .card-title,
+body.theme-night .block-text,
+body.theme-night .card-penname,
+body.theme-night .stat-value {
+  color: #e5e7eb;
+}
+
+body.theme-night .chip {
+  border-color: #1e293b;
+  background: #020617;
+  color: #e5e7eb;
+}
+
 /* 响应式 */
 @media (max-width: 900px) {
   .layout {
@@ -312,10 +389,5 @@ body {
   .preview-wrap {
     width: 100%;
   }
-  .preview-wrap {
-    padding: 1rem;
-  }
-  .card {
-    max-width: 100%;
-  }
 }
+
