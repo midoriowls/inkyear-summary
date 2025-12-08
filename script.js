@@ -5,9 +5,8 @@ const data = {
   totalWords: "320,000",
   tags: "同人 文手 年度总结",
   reflection: "这一年写得跌跌撞撞，但也收到了很多意想不到的喜欢。",
-  months: [
-    // { id, month, title, tags, text }
-  ],
+  // months: { id, month, title, tags, write, note }
+  months: [],
 };
 
 // 渲染整张海报
@@ -21,7 +20,7 @@ function renderPoster() {
     data.reflection ||
     "这一年写得跌跌撞撞，但也收到了很多意想不到的喜欢。";
 
-  // 标签
+  // 年度标签
   const tagsContainer = document.getElementById("pv-tags");
   tagsContainer.innerHTML = "";
   const tags = (data.tags || "").split(/[,，\s]+/).filter(Boolean);
@@ -40,30 +39,42 @@ function renderPoster() {
   monthsContainer.innerHTML = "";
 
   data.months.forEach((item) => {
-    if (!item.month) return; // 没填月份就不渲染
+    if (!item.month) return; // 必须有月份
 
     const row = document.createElement("div");
     row.className = "month-row";
 
+    // 左侧：月份 + 想说的话
+    const left = document.createElement("div");
+    left.className = "month-left";
+
     const label = document.createElement("div");
     label.className = "month-label";
     label.textContent = item.month;
+    left.appendChild(label);
 
+    if (item.note) {
+      const noteEl = document.createElement("div");
+      noteEl.className = "month-note";
+      noteEl.textContent = item.note;
+      left.appendChild(noteEl);
+    }
+
+    // 中间圆点
     const dot = document.createElement("div");
     dot.className = "month-dot";
 
-    const content = document.createElement("div");
-    content.className = "month-content";
+    // 右侧：标题 + tag + 正文
+    const right = document.createElement("div");
+    right.className = "month-right";
 
-    // 标题（可选）
     if (item.title) {
       const titleEl = document.createElement("div");
       titleEl.className = "month-title";
       titleEl.textContent = item.title;
-      content.appendChild(titleEl);
+      right.appendChild(titleEl);
     }
 
-    // 月份内的 tag（可选）
     const tagText = (item.tags || "").trim();
     if (tagText) {
       const tagsWrap = document.createElement("div");
@@ -77,25 +88,19 @@ function renderPoster() {
           pill.textContent = t;
           tagsWrap.appendChild(pill);
         });
-      content.appendChild(tagsWrap);
+      right.appendChild(tagsWrap);
     }
 
-    // 节选 / 想说的话（可选，稍微截断一点防止太长撑爆）
-    if (item.text) {
-      const excerptEl = document.createElement("div");
-      excerptEl.className = "month-excerpt";
-      const maxLen = 80;
-      const txt =
-        item.text.length > maxLen
-          ? item.text.slice(0, maxLen) + "..."
-          : item.text;
-      excerptEl.textContent = txt;
-      content.appendChild(excerptEl);
+    if (item.write) {
+      const writeEl = document.createElement("div");
+      writeEl.className = "month-write";
+      writeEl.textContent = item.write;
+      right.appendChild(writeEl);
     }
 
-    row.appendChild(label);
+    row.appendChild(left);
     row.appendChild(dot);
-    row.appendChild(content);
+    row.appendChild(right);
     monthsContainer.appendChild(row);
   });
 }
@@ -111,8 +116,9 @@ function renderMonthList() {
     row.className = "month-item-row";
 
     const titlePreview = item.title || "未命名记录";
-    const textSnippet = item.text
-      ? item.text.slice(0, 12) + (item.text.length > 12 ? "..." : "")
+    const snippetSource = item.write || item.note || "";
+    const textSnippet = snippetSource
+      ? snippetSource.slice(0, 12) + (snippetSource.length > 12 ? "..." : "")
       : "";
 
     const span = document.createElement("span");
@@ -142,7 +148,7 @@ function bindBaseFields() {
     const key = el.dataset.field;
     el.value = data[key] || "";
     el.addEventListener("input", () => {
-      data[key] = el.value.trim();
+      data[key] = el.value;
       renderPoster();
     });
   });
@@ -154,29 +160,33 @@ function bindMonthForm() {
   const monthInput = document.getElementById("monthName");
   const titleInput = document.getElementById("monthTitle");
   const tagsInput = document.getElementById("monthTags");
-  const textInput = document.getElementById("monthText");
+  const writeInput = document.getElementById("monthWrite");
+  const noteInput = document.getElementById("monthNote");
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
     const month = monthInput.value.trim();
     const title = titleInput.value.trim();
     const tags = tagsInput.value.trim();
-    const text = textInput.value.trim();
+    const write = writeInput.value; // 保留换行
+    const note = noteInput.value;   // 保留换行
 
-    if (!month) return; // 没填月份就不添加
+    if (!month) return; // 必须有月份才记一条
 
     data.months.push({
       id: Date.now() + Math.random(),
       month,
       title,
       tags,
-      text,
+      write,
+      note,
     });
 
     monthInput.value = "";
     titleInput.value = "";
     tagsInput.value = "";
-    textInput.value = "";
+    writeInput.value = "";
+    noteInput.value = "";
 
     renderMonthList();
     renderPoster();
@@ -190,4 +200,3 @@ document.addEventListener("DOMContentLoaded", () => {
   renderPoster();
   renderMonthList();
 });
-
