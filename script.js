@@ -1,78 +1,194 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const penNameInput = document.getElementById('penName');
-    const writtenContentTextarea = document.getElementById('writtenContent');
-    const thoughtsTextarea = document.getElementById('thoughts');
-    const generateBtn = document.getElementById('generateBtn');
-    const summaryOutput = document.getElementById('summaryOutput');
-    const copyBtn = document.getElementById('copyBtn');
+/* -------------------------
+   数据结构
+------------------------- */
+const data = {
+  year: new Date().getFullYear().toString(),
+  penName: "",
+  totalWords: "",
+  tags: "",
+  reflection: "",
+  months: []  // {id, month, title, tags, write, note}
+};
 
-    generateBtn.addEventListener('click', generateSummary);
-    copyBtn.addEventListener('click', copySummary);
+/* -------------------------
+   基本信息同步
+------------------------- */
+function bindBaseFields() {
+  document.querySelectorAll("[data-field]").forEach(el => {
+    const key = el.dataset.field;
+    el.value = data[key] || "";
+    el.addEventListener("input", () => {
+      data[key] = el.value;
+      renderPoster();
+    });
+  });
+}
 
-    /**
-     * 生成年终总结报告
-     */
-    function generateSummary() {
-        const penName = penNameInput.value.trim() || '不具名的神秘写手';
-        const writtenContent = writtenContentTextarea.value.trim() || '（此处未填写具体内容，但您的努力已被记录。）';
-        const thoughts = thoughtsTextarea.value.trim() || '（此处是对过去一年的留白，请用文字填满它。）';
+/* -------------------------
+   月份记录添加
+------------------------- */
+function bindMonthForm() {
+  const form = document.getElementById("monthForm");
+  form.addEventListener("submit", e => {
+    e.preventDefault();
 
-        const summaryText = `
-=============================================
-           🏆 ${penName} 年度写作报告 🏆
-=============================================
+    const item = {
+      id: Date.now(),
+      month: document.getElementById("monthName").value.trim(),
+      title: document.getElementById("monthTitle").value.trim(),
+      tags: document.getElementById("monthTags").value.trim(),
+      write: document.getElementById("monthWrite").value,
+      note: document.getElementById("monthNote").value
+    };
 
-【 ✍️ 笔名留念 】
-  **${penName}**
+    if (!item.month) return;
 
-【 📚 2024年主要成就回顾 】
-  过去的一年，您在文字的疆域上留下了深刻的足迹。
-  记录如下：
-  -----------------------------------------
-  ${writtenContent}
-  -----------------------------------------
+    data.months.push(item);
+    renderMonthList();
+    renderPoster();
 
-【 💡 写手心得与未来展望 】
-  您的所思所想，是下一段旅程的火种。
-  -----------------------------------------
-  ${thoughts}
-  -----------------------------------------
+    form.reset();
+  });
+}
 
-恭喜您完成这一年的写作挑战！
-新的一年，愿灵感如泉涌，笔耕不辍。
+/* -------------------------
+   左侧列表显示
+------------------------- */
+function renderMonthList() {
+  const list = document.getElementById("monthList");
+  list.innerHTML = "";
 
-[报告生成日期: ${new Date().toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' })}]
-`;
+  data.months.forEach(m => {
+    const row = document.createElement("div");
+    row.className = "month-item-row";
 
-        // 将生成的纯文本转换为HTML格式，以便在summaryOutput中显示高亮
-        const formattedSummary = summaryText
-            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // 粗体标记
-            .replace(/\n/g, '<br>'); // 将换行符转为<br>
+    row.innerHTML = `
+      <span>${m.month}：${m.title || "未命名"}</span>
+      <button class="btn-remove">删除</button>
+    `;
 
-        summaryOutput.innerHTML = formattedSummary;
-        copyBtn.classList.remove('hidden'); // 显示复制按钮
+    row.querySelector(".btn-remove").onclick = () => {
+      data.months = data.months.filter(i => i.id !== m.id);
+      renderMonthList();
+      renderPoster();
+    };
+
+    list.appendChild(row);
+  });
+}
+
+/* -------------------------
+   海报主渲染
+------------------------- */
+function renderPoster() {
+  document.getElementById("pv-year").textContent = data.year || "";
+  document.getElementById("pv-penName").textContent = data.penName || "";
+  document.getElementById("pv-totalWords").textContent = data.totalWords || "";
+  document.getElementById("pv-reflection").textContent = data.reflection || "";
+
+  /* tags */
+  const tagsWrap = document.getElementById("pv-tags");
+  tagsWrap.innerHTML = "";
+  data.tags.split(/[,，\s]+/).filter(Boolean).forEach(t => {
+    const span = document.createElement("span");
+    span.textContent = t;
+    tagsWrap.appendChild(span);
+  });
+
+  /* months */
+  const container = document.getElementById("pv-months");
+  container.innerHTML = "";
+
+  data.months.forEach(m => {
+    const row = document.createElement("div");
+    row.className = "month-row";
+
+    /* 左列 */
+    const left = document.createElement("div");
+    left.className = "month-left";
+
+    left.innerHTML = `
+      <div class="month-label">${m.month}</div>
+      ${m.title ? `<div class="month-title">${m.title}</div>` : ""}
+    `;
+
+    /* tags */
+    if (m.tags) {
+      const wrap = document.createElement("div");
+      wrap.className = "month-tags";
+      m.tags.split(/[,，\s]+/).filter(Boolean).forEach(t => {
+        const pill = document.createElement("span");
+        pill.className = "month-tag-pill";
+        pill.textContent = t;
+        wrap.appendChild(pill);
+      });
+      left.appendChild(wrap);
     }
 
-    /**
-     * 复制总结报告文本
-     */
-    function copySummary() {
-        // 为了确保复制的是纯文本，我们从summaryOutput的innerText获取
-        const summaryText = summaryOutput.innerText;
-
-        navigator.clipboard.writeText(summaryText).then(() => {
-            // 复制成功提示
-            const originalText = copyBtn.textContent;
-            copyBtn.textContent = '✅ 已复制!';
-            
-            setTimeout(() => {
-                copyBtn.textContent = originalText;
-            }, 1500);
-
-        }).catch(err => {
-            console.error('复制失败: ', err);
-            alert('复制失败，请手动选择复制。');
-        });
+    /* note */
+    if (m.note) {
+      const note = document.createElement("div");
+      note.className = "month-note";
+      note.textContent = m.note;
+      left.appendChild(note);
     }
+
+    /* 中间点 */
+    const dot = document.createElement("div");
+    dot.className = "month-dot";
+
+    /* 右列正文 */
+    const right = document.createElement("div");
+    right.className = "month-right";
+    const write = document.createElement("div");
+    write.className = "month-write";
+    write.textContent = m.write;
+    right.appendChild(write);
+
+    /* 合成行 */
+    row.appendChild(left);
+    row.appendChild(dot);
+    row.appendChild(right);
+    container.appendChild(row);
+  });
+}
+
+/* -------------------------
+   主题切换
+------------------------- */
+let themeState = 0;
+const themes = ["theme-vintage", "theme-sepia", "theme-dark"];
+
+document.getElementById("btn-theme").onclick = () => {
+  themeState = (themeState + 1) % themes.length;
+  document.body.className = themes[themeState];
+};
+
+/* -------------------------
+   导出 PNG
+------------------------- */
+document.getElementById("btn-download").onclick = async () => {
+  const poster = document.getElementById("poster");
+
+  html2canvas(poster, {
+    scale: 2,
+    backgroundColor: null
+  }).then(canvas => {
+    const link = document.createElement("a");
+    link.download = `year-end-summary.png`;
+    link.href = canvas.toDataURL();
+    link.click();
+  });
+};
+
+/* -------------------------
+   初始化
+------------------------- */
+document.addEventListener("DOMContentLoaded", () => {
+  bindBaseFields();
+  bindMonthForm();
+  renderPoster();
+  renderMonthList();
 });
+
 
