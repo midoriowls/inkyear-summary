@@ -1,4 +1,4 @@
-// 默认文本，用于当输入为空时展示
+// 默认文本
 const defaults = {
   year: "2024",
   penname: "不羡仙",
@@ -9,7 +9,7 @@ const defaults = {
   highlightTitle: "《开封府地契》",
   highlightCP: "赵光义 x 原创少侠",
   selfComment: "这一年写得跌跌撞撞，但也收到了很多意想不到的喜欢。",
-  readerComment: "“谢谢你写了这样一篇故事，让我在很糟糕的一周里睡得很好。”"
+  readerComment: "“谢谢你写了这样一篇故事，让我在糟糕的一周里睡得很好。”",
 };
 
 function updatePreview() {
@@ -31,13 +31,13 @@ function updatePreview() {
         document.getElementById("pv-title").textContent = text;
         break;
       case "tags":
-        const tagContainer = document.getElementById("pv-tags");
-        tagContainer.innerHTML = "";
-        (text.split(/[,，\s]+/).filter(Boolean)).forEach((tag) => {
+        const container = document.getElementById("pv-tags");
+        container.innerHTML = "";
+        text.split(/[,，\s]+/).filter(Boolean).forEach((tag) => {
           const span = document.createElement("span");
           span.className = "chip";
           span.textContent = tag;
-          tagContainer.appendChild(span);
+          container.appendChild(span);
         });
         break;
       case "worksCount":
@@ -58,43 +58,68 @@ function updatePreview() {
       case "readerComment":
         document.getElementById("pv-readerComment").textContent = text;
         break;
-      default:
-        break;
     }
   });
 }
 
-// 监听输入
-document.addEventListener("input", (e) => {
-  if (e.target.matches("[data-bind]")) {
-    updatePreview();
-  }
-});
-
-// 初次渲染一下默认值
 document.addEventListener("DOMContentLoaded", () => {
   updatePreview();
 
-  // 年份按钮逻辑
+  // 年份按钮
   const yearButtons = document.querySelectorAll(".year-btn");
   const yearInput = document.querySelector('[data-bind="year"]');
 
   yearButtons.forEach((btn) => {
     btn.addEventListener("click", () => {
       const year = btn.dataset.year;
-      if (yearInput) {
-        yearInput.value = year;
-        updatePreview();
-      }
-      // 高亮当前
+      yearInput.value = year;
+      updatePreview();
       yearButtons.forEach((b) => b.classList.remove("pill-secondary"));
       btn.classList.add("pill-secondary");
     });
   });
+
+  // 主题切换
+  const themeSelect = document.getElementById("themeSelect");
+  themeSelect.addEventListener("change", () => {
+    document.body.classList.remove("theme-ink", "theme-rose", "theme-night");
+    document.body.classList.add("theme-" + themeSelect.value);
+  });
+
+  // 版式切换
+  const layoutSelect = document.getElementById("layoutSelect");
+  const card = document.getElementById("previewCard");
+
+  layoutSelect.addEventListener("change", () => {
+    if (layoutSelect.value === "compact") {
+      card.classList.add("card--compact");
+    } else {
+      card.classList.remove("card--compact");
+    }
+  });
 });
 
+// 隐藏功能
+document.addEventListener("change", (e) => {
+  if (!e.target.matches(".toggle")) return;
+  const key = e.target.dataset.target;
+  const visible = e.target.checked;
 
-// 导出按钮（之后实现）
-document.getElementById("exportBtn").addEventListener("click", () => {
-  alert("导出功能我们之后再加！现在先把排版调舒服～");
+  const map = {
+    worksCount: ".stat-works",
+    totalWords: ".stat-words",
+    selfComment: ".block-self",
+    readerComment: ".block-reader",
+  };
+
+  const selector = map[key];
+  if (selector) {
+    const el = document.querySelector(selector);
+    if (el) el.style.display = visible ? "" : "none";
+  }
+});
+
+// 实时输入刷新
+document.addEventListener("input", (e) => {
+  if (e.target.matches("[data-bind]")) updatePreview();
 });
