@@ -79,6 +79,12 @@ body {
   margin-bottom: 0.25rem;
 }
 
+.hint {
+  font-size: 0.7rem;
+  color: #9a8a79;
+  margin-left: 0.15rem;
+}
+
 .field input,
 .field textarea {
   width: 100%;
@@ -286,11 +292,11 @@ body {
   border-left: 1px dotted #8d7f6e;
 }
 
-/* 月份条目：左边月份，中心圆点，右边文字 */
+/* 月份条目：左边月份，中心圆点，右边内容块 */
 .month-row {
   position: relative;
   display: flex;
-  min-height: 2.5rem;
+  padding-bottom: 0.6rem;
   font-size: 0.78rem;
 }
 
@@ -299,7 +305,7 @@ body {
   text-align: right;
   padding-right: 0.5rem;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   font-family: "Times New Roman", "Georgia", serif;
   font-weight: 600;
 }
@@ -312,15 +318,40 @@ body {
   border: 1px solid #8d7f6e;
   background: #e6ded3;
   position: relative;
-  top: 0.5rem;
+  top: 0.3rem;
   margin-right: 0.6rem;
 }
 
-/* 右侧内容段落 */
-.month-text {
+/* 右侧内容：标题 + tag + 节选 */
+.month-content {
   flex: 1;
-  padding-top: 0.2rem;
+  padding-top: 0.1rem;
   color: #3a3128;
+}
+
+.month-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 0.1rem;
+}
+
+.month-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin-bottom: 0.15rem;
+}
+
+.month-tag-pill {
+  padding: 0.05rem 0.4rem;
+  border-radius: 999px;
+  border: 1px solid #c5b5a3;
+  font-size: 0.68rem;
+}
+
+.month-excerpt {
+  font-size: 0.75rem;
+  line-height: 1.5;
 }
 
 /* 响应式：窄屏时上下排 */
@@ -339,5 +370,6 @@ body {
     max-width: 360px;
   }
 }
+
 
 
