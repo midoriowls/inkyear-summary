@@ -6,17 +6,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+
+<body class="theme-ink">
   <header class="topbar">
     <div class="brand">
       <div class="logo">✒</div>
       <span>InkYear · 写手年终工作台</span>
     </div>
+
     <div class="top-actions">
+      <!-- 年份切换 -->
       <button class="pill pill-secondary year-btn" data-year="2024">2024</button>
       <button class="pill pill-ghost year-btn" data-year="2025">2025</button>
 
-      <button id="exportBtn" class="pill pill-primary">导出海报（之后再做）</button>
+      <!-- 版式切换 -->
+      <select id="layoutSelect" class="pill pill-select">
+        <option value="classic">版式 A</option>
+        <option value="compact">版式 B</option>
+      </select>
+
+      <!-- 主题切换 -->
+      <select id="themeSelect" class="pill pill-select">
+        <option value="ink">墨青</option>
+        <option value="rose">玫瑰</option>
+        <option value="night">夜间</option>
+      </select>
+
+      <!-- 导出按钮（功能稍后实现） -->
+      <button id="exportBtn" class="pill pill-primary">导出海报</button>
     </div>
   </header>
 
@@ -24,6 +41,7 @@
     <!-- 左侧编辑区 -->
     <section class="editor">
       <h2 class="section-title">基础信息</h2>
+
       <div class="field">
         <label>年份</label>
         <input type="text" data-bind="year" placeholder="例：2024" />
@@ -40,8 +58,8 @@
       </div>
 
       <div class="field">
-        <label>年度关键词（用空格或逗号分隔）</label>
-        <input type="text" data-bind="tags" placeholder="例：同人 文手 乙女游戏 老福特" />
+        <label>年度关键词（空格/逗号分隔）</label>
+        <input type="text" data-bind="tags" placeholder="例：同人 文手 乙女游戏" />
       </div>
 
       <hr class="divider" />
@@ -50,11 +68,18 @@
 
       <div class="field-group">
         <div class="field">
-          <label>作品篇数</label>
+          <label>
+            <input type="checkbox" class="toggle" data-target="worksCount" checked />
+            显示作品篇数
+          </label>
           <input type="number" data-bind="worksCount" placeholder="例：12" />
         </div>
+
         <div class="field">
-          <label>总字数</label>
+          <label>
+            <input type="checkbox" class="toggle" data-target="totalWords" checked />
+            显示总字数
+          </label>
           <input type="text" data-bind="totalWords" placeholder="例：320,000" />
         </div>
       </div>
@@ -65,29 +90,38 @@
       </div>
 
       <div class="field">
-        <label>代表作 CP / 作品标签</label>
+        <label>代表作 CP / 标签</label>
         <input type="text" data-bind="highlightCP" placeholder="例：赵光义 x 原创少侠" />
       </div>
 
       <hr class="divider" />
 
       <h2 class="section-title">写给自己的话</h2>
+
       <div class="field">
-        <label>年度自评</label>
+        <label>
+          <input type="checkbox" class="toggle" data-target="selfComment" checked />
+          显示年度自评
+        </label>
         <textarea data-bind="selfComment" rows="4"
-          placeholder="例：这一年写得跌跌撞撞，但也收到了很多意想不到的喜欢。"></textarea>
+          placeholder="例：这一年写得跌跌撞撞，但收到了很多喜欢。"></textarea>
       </div>
 
       <div class="field">
-        <label>想记住的一条读者评论</label>
+        <label>
+          <input type="checkbox" class="toggle" data-target="readerComment" checked />
+          显示读者评论
+        </label>
         <textarea data-bind="readerComment" rows="3"
-          placeholder="例：“谢谢你写了这样一篇故事，让我在很糟糕的一周里睡得很好。”"></textarea>
+          placeholder="例：'这篇故事让我度过很糟糕的那周。'"></textarea>
       </div>
+
     </section>
 
     <!-- 右侧预览区 -->
     <section class="preview-wrap">
       <div class="card" id="previewCard">
+
         <div class="card-header">
           <div class="card-year" id="pv-year">2024</div>
           <div class="card-meta">
@@ -96,9 +130,7 @@
           </div>
         </div>
 
-        <div class="card-title" id="pv-title">
-          在修文与截稿线之间摇摆的一年
-        </div>
+        <div class="card-title" id="pv-title">在修文与截稿线之间摇摆的一年</div>
 
         <div class="card-tags" id="pv-tags">
           <span class="chip">同人</span>
@@ -107,11 +139,12 @@
         </div>
 
         <div class="card-stats">
-          <div class="stat">
+          <div class="stat stat-works">
             <div class="stat-label">作品篇数</div>
             <div class="stat-value" id="pv-worksCount">12</div>
           </div>
-          <div class="stat">
+
+          <div class="stat stat-words">
             <div class="stat-label">总字数</div>
             <div class="stat-value" id="pv-totalWords">320,000</div>
           </div>
@@ -123,17 +156,17 @@
           <div class="highlight-sub" id="pv-highlightCP">赵光义 x 原创少侠</div>
         </div>
 
-        <div class="card-block">
+        <div class="card-block block-self">
           <div class="block-label">这一年的我</div>
           <p class="block-text" id="pv-selfComment">
             这一年写得跌跌撞撞，但也收到了很多意想不到的喜欢。
           </p>
         </div>
 
-        <div class="card-block">
+        <div class="card-block block-reader">
           <div class="block-label">想记住的一条评论</div>
           <p class="block-text" id="pv-readerComment">
-            “谢谢你写了这样一篇故事，让我在很糟糕的一周里睡得很好。”
+            “谢谢你写了这样一篇故事，让我在糟糕的一周里睡得很好。”
           </p>
         </div>
 
@@ -142,6 +175,7 @@
         </div>
       </div>
     </section>
+
   </main>
 
   <script src="script.js"></script>
