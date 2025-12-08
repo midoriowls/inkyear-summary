@@ -1,385 +1,162 @@
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+/* 导入外部复古字体 */
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap');
+
+:root {
+    --primary-bg-color: #fcf9e8; /* 柔和的米黄色底 */
+    --accent-color: #4a772e;     /* 复古墨绿色 */
+    --border-color: #8a6c4c;     /* 棕色边框 */
+    --text-color: #2b3a42;       /* 深色文字 */
+    --light-green: #7ebf54;      /* 稍浅的绿色用于hover */
 }
 
 body {
-  margin: 0;
-  font-family: "PingFang SC", -apple-system, BlinkMacSystemFont, system-ui,
-    "Segoe UI", sans-serif;
-  color: #111;
-  background: #dcd4c9;
+    font-family: 'Courier Prime', monospace;
+    background-color: var(--primary-bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
 }
 
-/* 顶部 */
-.topbar {
-  height: 3rem;
-  padding: 0 1.2rem;
-  display: flex;
-  align-items: center;
-  border-bottom: 1px solid #b8afa3;
-  background: #e7dfd4;
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.9rem;
-  letter-spacing: 0.05em;
-}
-
-.brand-mark {
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 999px;
-  border: 1px solid #37473c;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.8rem;
-  color: #37473c;
-}
-
-.brand-text {
-  color: #37473c;
-}
-
-/* 总体布局 */
-.layout {
-  display: flex;
-  min-height: calc(100vh - 3rem);
-}
-
-/* 左侧编辑区 */
-.editor {
-  width: 42%;
-  padding: 1.2rem 1.4rem;
-  border-right: 1px solid #c7beb1;
-  background: #f2e9dd;
-  overflow-y: auto;
-}
-
-.section-title {
-  font-size: 0.95rem;
-  font-weight: 600;
-  margin: 0 0 0.8rem;
-  color: #37473c;
-}
-
-.field {
-  margin-bottom: 0.9rem;
-}
-
-.field label {
-  display: block;
-  font-size: 0.8rem;
-  color: #6e6255;
-  margin-bottom: 0.25rem;
-}
-
-.hint {
-  font-size: 0.7rem;
-  color: #9a8a79;
-  margin-left: 0.15rem;
-}
-
-.field input,
-.field textarea {
-  width: 100%;
-  border-radius: 0.4rem;
-  border: 1px solid #cbbfb0;
-  padding: 0.45rem 0.55rem;
-  font-size: 0.8rem;
-  background: #fdf7ee;
-  outline: none;
-}
-
-.field input:focus,
-.field textarea:focus {
-  border-color: #496556;
-  box-shadow: 0 0 0 1px rgba(73, 101, 86, 0.15);
-}
-
-.field textarea {
-  resize: vertical;
-}
-
-.divider {
-  border: none;
-  border-top: 1px dashed #c7beb1;
-  margin: 1rem 0;
-}
-
-/* 月份表单 */
-.month-form {
-  margin-bottom: 0.75rem;
-  padding: 0.7rem 0.7rem 0.8rem;
-  border-radius: 0.5rem;
-  border: 1px dashed #cbbfb0;
-  background: #fbf3e6;
-}
-
-.btn-add-month {
-  margin-top: 0.2rem;
-  font-size: 0.8rem;
-  border-radius: 999px;
-  border: 1px solid #496556;
-  padding: 0.25rem 0.75rem;
-  background: #496556;
-  color: #fdf7ee;
-  cursor: pointer;
-}
-
-.btn-add-month:hover {
-  opacity: 0.92;
-}
-
-/* 左侧已添加月份列表 */
-.month-list {
-  font-size: 0.8rem;
-  color: #4b3f34;
-}
-
-.month-item-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 0.25rem 0;
-  border-bottom: 1px dotted #d0c3b4;
-}
-
-.month-item-row span {
-  max-width: 80%;
-}
-
-.btn-remove {
-  border: none;
-  background: none;
-  color: #a13030;
-  font-size: 0.75rem;
-  cursor: pointer;
-}
-
-/* 右侧预览区 */
-.preview-wrap {
-  width: 58%;
-  padding: 1.5rem;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-}
-
-/* 海报本体：不再固定比例，高度随内容 */
-.poster {
-  width: 100%;
-  max-width: 420px;
-  background: #e6ded3;
-  border-radius: 0.6rem;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
-  position: relative;
-}
-
-/* 顶部绿色横条 */
-.poster-header {
-  background: #556f61;
-  padding: 0.4rem 1.3rem;
-}
-
-.poster-header-en {
-  font-family: "Times New Roman", "Georgia", serif;
-  font-size: 0.9rem;
-  letter-spacing: 0.25em;
-  color: #e6ded3;
-}
-
-/* 主体上半部分 */
-.poster-main {
-  padding: 1rem 1.4rem 0.6rem;
-}
-
-.poster-title-cn {
-  font-family: "STSong", "SimSun", serif;
-  font-size: 1.2rem;
-  letter-spacing: 0.2em;
-  margin-bottom: 0.6rem;
-}
-
-.poster-main-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 1.4rem;
-}
-
-.poster-year {
-  font-family: "Times New Roman", "Georgia", serif;
-  font-size: 1.7rem;
-  letter-spacing: 0.1em;
-}
-
-.poster-meta {
-  font-size: 0.78rem;
-  line-height: 1.5;
-}
-
-.meta-line span {
-  font-weight: 500;
-}
-
-/* 标签 */
-.poster-tags {
-  margin-top: 0.7rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem;
-}
-
-.tag-pill {
-  padding: 0.1rem 0.6rem;
-  border-radius: 999px;
-  border: 1px solid #b09d86;
-  font-size: 0.72rem;
-}
-
-/* 总体感想 */
-.poster-reflection {
-  margin-top: 0.9rem;
-}
-
-.ref-label {
-  font-size: 0.75rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: #7b6c5d;
-}
-
-.ref-text {
-  margin: 0.3rem 0 0;
-  font-size: 0.8rem;
-  line-height: 1.8;
-  white-space: pre-line; /* 支持空行 */
-}
-
-/* 下半部分：月份时间线 */
-.poster-months {
-  padding: 0.4rem 1.4rem 1.2rem;
-  display: flex;
-  flex-direction: column;
-}
-
-.months-title {
-  margin-top: 0.4rem;
-  font-size: 0.86rem;
-  font-weight: 600;
-}
-
-.months-timeline {
-  margin-top: 0.6rem;
-  position: relative;
-}
-
-/* 中间纵向虚线：稍微偏左一点 */
-.months-timeline::before {
-  content: "";
-  position: absolute;
-  left: 43%;
-  top: 0.1rem;
-  bottom: 0.1rem;
-  border-left: 1px dotted #8d7f6e;
-}
-
-/* 月份条目：左边（月份+代表作+tag+想说的话），中间圆点，右边长正文 */
-.month-row {
-  position: relative;
-  display: flex;
-  padding: 0.9rem 0;
-  font-size: 0.8rem;
-}
-
-/* 左列 */
-.month-left {
-  width: 43%;
-  padding-right: 0.75rem;
-  text-align: right;
-  color: #4a3d31;
-}
-
-.month-label {
-  font-family: "Times New Roman", "Georgia", serif;
-  font-weight: 600;
-  margin-bottom: 0.15rem;
-}
-
-.month-title {
-  font-size: 0.8rem;
-  font-weight: 600;
-  margin-bottom: 0.1rem;
-}
-
-.month-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.2rem;
-  justify-content: flex-end;
-  margin-bottom: 0.15rem;
-}
-
-.month-tag-pill {
-  padding: 0.05rem 0.4rem;
-  border-radius: 999px;
-  border: 1px solid #c5b5a3;
-  font-size: 0.68rem;
-}
-
-.month-note {
-  font-size: 0.76rem;
-  line-height: 1.6;
-  white-space: pre-line;
-}
-
-/* 圆点 */
-.month-dot {
-  position: absolute;
-  left: calc(43% - 0.35rem);
-  top: 1.1rem;
-  width: 0.65rem;
-  height: 0.65rem;
-  border-radius: 50%;
-  border: 1px solid #8d7f6e;
-  background: #e6ded3;
-}
-
-/* 右列：正文 */
-.month-right {
-  width: 57%;
-  padding-left: 0.75rem;
-  color: #3a3128;
-}
-
-.month-write {
-  font-size: 0.76rem;
-  line-height: 1.8;
-  white-space: pre-line; /* 支持空行 */
-}
-
-/* 响应式：窄屏时上下排 */
-@media (max-width: 900px) {
-  .layout {
-    flex-direction: column;
-  }
-  .editor,
-  .preview-wrap {
+.container {
+    background-color: #fff;
+    padding: 40px 60px;
+    max-width: 800px;
     width: 100%;
-  }
-  .preview-wrap {
-    padding: 1rem;
-  }
-  .poster {
-    max-width: 360px;
-  }
+    box-shadow: 10px 10px 0px 0px var(--border-color); /* 凸起的复古阴影 */
+    border: 3px solid var(--accent-color);
+    margin-top: 20px;
 }
 
+h1 {
+    color: var(--accent-color);
+    text-align: center;
+    border-bottom: 2px dashed var(--light-green);
+    padding-bottom: 10px;
+    font-size: 2.5em;
+    font-weight: 700;
+}
+
+h2 {
+    color: var(--accent-color);
+    border-left: 5px solid var(--light-green);
+    padding-left: 10px;
+    margin-top: 30px;
+}
+
+.subtitle {
+    text-align: center;
+    font-style: italic;
+    margin-bottom: 30px;
+    color: var(--border-color);
+}
+
+/* --- 表单元素样式 --- */
+.input-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+input[type="text"],
+textarea {
+    width: 95%;
+    padding: 10px;
+    border: 2px solid var(--border-color);
+    background-color: #fff;
+    font-family: 'Courier Prime', monospace;
+    font-size: 1em;
+    color: var(--text-color);
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus,
+textarea:focus {
+    border-color: var(--accent-color);
+    outline: none;
+    background-color: #f7f3e1; /* 焦点时的微小变化 */
+}
+
+/* --- 按钮样式 (重点绿色) --- */
+button {
+    background-color: var(--accent-color);
+    color: var(--primary-bg-color);
+    padding: 10px 20px;
+    border: 2px solid var(--accent-color);
+    cursor: pointer;
+    font-family: 'Courier Prime', monospace;
+    font-size: 1.1em;
+    font-weight: 700;
+    margin-top: 15px;
+    transition: background-color 0.3s, transform 0.1s;
+    box-shadow: 3px 3px 0px 0px var(--border-color); /* 按钮阴影 */
+}
+
+button:hover {
+    background-color: var(--light-green);
+    border-color: var(--light-green);
+}
+
+button:active {
+    transform: translate(3px, 3px); /* 模拟点击的压下效果 */
+    box-shadow: none;
+}
+
+#generateBtn {
+    display: block;
+    width: 100%;
+}
+
+/* --- 输出结果区域样式 --- */
+.summary-box {
+    min-height: 200px;
+    padding: 20px;
+    border: 4px double var(--accent-color); /* 双线边框，增加复古感 */
+    background-color: #fff;
+    white-space: pre-wrap; /* 保留换行符和空格，模拟文档排版 */
+    font-size: 1.1em;
+}
+
+.placeholder-text {
+    color: #a0a0a0;
+    font-style: italic;
+    text-align: center;
+    padding: 50px 0;
+}
+
+/* 总结报告中的高亮元素 */
+.summary-box strong {
+    color: var(--accent-color);
+    font-weight: 700;
+}
+
+#copyBtn {
+    margin-top: 20px;
+    float: right;
+}
+
+.hidden {
+    display: none;
+}
+
+footer {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--border-color);
+    color: var(--border-color);
+    font-size: 0.9em;
+}
 
 
 
