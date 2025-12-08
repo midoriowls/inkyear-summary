@@ -1,0 +1,321 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui,
+    "Segoe UI", sans-serif;
+  background: #f5f5f7;
+  color: #111827;
+}
+
+/* 顶部栏 */
+.topbar {
+  height: 3.5rem;
+  padding: 0 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffffcc;
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.logo {
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 999px;
+  border: 1px solid #064e3b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  color: #064e3b;
+}
+
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* 按钮 */
+.pill {
+  border-radius: 999px;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.75rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.pill-secondary {
+  background: #065f46;
+  color: #f9fafb;
+  border-color: #064e3b;
+}
+
+.pill-ghost {
+  background: #f9fafb;
+  color: #4b5563;
+  border-color: #e5e7eb;
+}
+
+.pill-primary {
+  background: #111827;
+  color: #f9fafb;
+}
+
+/* 布局 */
+.layout {
+  display: flex;
+  min-height: calc(100vh - 3.5rem);
+}
+
+/* 左侧编辑区 */
+.editor {
+  width: 40%;
+  border-right: 1px solid #e5e7eb;
+  padding: 1.25rem 1.5rem;
+  background: #f9fafb;
+  overflow-y: auto;
+}
+
+.section-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 0 0 0.75rem;
+  color: #064e3b;
+}
+
+.field {
+  margin-bottom: 0.9rem;
+}
+
+.field label {
+  display: block;
+  font-size: 0.78rem;
+  color: #6b7280;
+  margin-bottom: 0.25rem;
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+  padding: 0.45rem 0.6rem;
+  font-size: 0.8rem;
+  outline: none;
+  background: #ffffff;
+}
+
+.field input:focus,
+.field textarea:focus {
+  border-color: #065f46;
+  box-shadow: 0 0 0 1px #bbf7d0;
+}
+
+.field textarea {
+  resize: vertical;
+}
+
+.field-group {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.divider {
+  border: none;
+  border-top: 1px dashed #e5e7eb;
+  margin: 1rem 0;
+}
+
+/* 右侧预览区 */
+.preview-wrap {
+  width: 60%;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card {
+  width: 100%;
+  max-width: 520px;
+  aspect-ratio: 3 / 4;
+  background: #fdfcf9;
+  border-radius: 1rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 15px 35px rgba(15, 23, 42, 0.12);
+  padding: 1.3rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0.75rem;
+  border-radius: 0.9rem;
+  border: 1px solid #e5e7eb;
+  pointer-events: none;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.card-year {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #065f46;
+}
+
+.card-meta {
+  text-align: right;
+}
+
+.card-tag {
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #9ca3af;
+}
+
+.card-penname {
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+  color: #4b5563;
+}
+
+.card-title {
+  margin-top: 0.6rem;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: #111827;
+  position: relative;
+  z-index: 1;
+}
+
+.card-tags {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.chip {
+  padding: 0.15rem 0.45rem;
+  border-radius: 999px;
+  border: 1px solid #d1fae5;
+  background: #ecfdf5;
+  font-size: 0.65rem;
+  color: #047857;
+}
+
+.card-stats {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.9rem;
+}
+
+.stat {
+  flex: 1;
+}
+
+.stat-label {
+  font-size: 0.7rem;
+  color: #9ca3af;
+}
+
+.stat-value {
+  margin-top: 0.15rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #064e3b;
+}
+
+.card-highlight {
+  margin-top: 0.9rem;
+}
+
+.highlight-label {
+  font-size: 0.7rem;
+  color: #9ca3af;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.highlight-title {
+  margin-top: 0.25rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.highlight-sub {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-top: 0.1rem;
+}
+
+.card-block {
+  margin-top: 0.8rem;
+}
+
+.block-label {
+  font-size: 0.7rem;
+  color: #9ca3af;
+}
+
+.block-text {
+  margin: 0.25rem 0 0;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: #374151;
+}
+
+.card-footer {
+  margin-top: auto;
+  font-size: 0.7rem;
+  color: #9ca3af;
+  text-align: right;
+}
+
+/* 响应式 */
+@media (max-width: 900px) {
+  .layout {
+    flex-direction: column;
+  }
+  .editor,
+  .preview-wrap {
+    width: 100%;
+  }
+  .preview-wrap {
+    padding: 1rem;
+  }
+  .card {
+    max-width: 100%;
+  }
+}
