@@ -1,52 +1,128 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📜 复古年终总结生成器</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <title>写手年度总结 · Vintage Maker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- 引入 html2canvas 用于 PNG 导出 -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 </head>
-<body>
-    <div class="container">
-        <h1>🖋️ 2024 年度写作成就总结</h1>
-        <p class="subtitle">致敬您的点滴汗水与创意</p>
 
-        <section class="input-section">
-            <h2>信息录入</h2>
-            <div class="input-group">
-                <label for="penName">您的笔名：</label>
-                <input type="text" id="penName" placeholder="例如：月下独酌">
-            </div>
-            <div class="input-group">
-                <label for="writtenContent">今年主要写了（类型/作品名）：</label>
-                <textarea id="writtenContent" rows="4" placeholder="例如：完成了长篇小说《星辰的回响》；创作了20篇短篇散文。"></textarea>
-            </div>
-            <div class="input-group">
-                <label for="thoughts">想说的话（心得/展望）：</label>
-                <textarea id="thoughts" rows="4" placeholder="例如：感谢读者陪伴，新的一年将挑战新的题材。"></textarea>
-            </div>
-            <button id="generateBtn">生成总结报告</button>
-        </section>
+<body class="theme-vintage">
 
-        <section class="output-section">
-            <h2>总结报告</h2>
-            <div id="summaryOutput" class="summary-box">
-                <p class="placeholder-text">请在上方填写信息，点击按钮生成您的年度总结。</p>
-            </div>
-            <button id="copyBtn" class="hidden">复制报告</button>
-        </section>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">✒</span>
+      <span class="brand-text">写手年度总结生成器</span>
     </div>
 
-    <footer>
-        <p>致敬所有用心书写的人</p>
-    </footer>
+    <div class="actions">
+      <button class="btn" id="btn-theme">主题切换</button>
+      <button class="btn btn-primary" id="btn-download">导出 PNG</button>
+    </div>
+  </header>
 
-    <script src="script.js"></script>
-</body>
-</html>
+  <main class="layout">
+    <!-- 输入区域 -->
+    <section class="editor">
+      <h2 class="section-title">基本信息</h2>
 
+      <div class="field">
+        <label>年份</label>
+        <input type="text" data-field="year" placeholder="例：2025" />
+      </div>
 
+      <div class="field">
+        <label>笔名</label>
+        <input type="text" data-field="penName" placeholder="例：不羡仙" />
+      </div>
+
+      <div class="field">
+        <label>总字数</label>
+        <input type="text" data-field="totalWords" placeholder="例：320000" />
+      </div>
+
+      <div class="field">
+        <label>关键词</label>
+        <input type="text" data-field="tags" placeholder="例：同人 年终 总结" />
+      </div>
+
+      <div class="field">
+        <label>年度感想</label>
+        <textarea data-field="reflection" rows="3"></textarea>
+      </div>
+
+      <hr class="divider" />
+
+      <h2 class="section-title">每月写作记录（可选）</h2>
+
+      <form id="monthForm" class="month-form">
+        <div class="field">
+          <label>月份（月名）</label>
+          <input id="monthName" placeholder="例：三月 / March" />
+        </div>
+
+        <div class="field">
+          <label>代表作（可选）</label>
+          <input id="monthTitle" placeholder="例：《番外完结》" />
+        </div>
+
+        <div class="field">
+          <label>小关键词（可选）</label>
+          <input id="monthTags" placeholder="例：修文 开封府少侠" />
+        </div>
+
+        <div class="field">
+          <label>本月写了什么（正文）</label>
+          <textarea id="monthWrite" rows="3"></textarea>
+        </div>
+
+        <div class="field">
+          <label>想说的话（左侧脚注）</label>
+          <textarea id="monthNote" rows="2"></textarea>
+        </div>
+
+        <button class="btn-add-month">➕ 添加本月记录</button>
+      </form>
+
+      <div id="monthList" class="month-list"></div>
+
+    </section>
+
+    <!-- 预览区 -->
+    <section class="preview">
+      <div id="poster" class="poster">
+        <div class="poster-header">YEAR-END SUMMARY</div>
+
+        <div class="poster-main">
+          <div class="poster-title">文手年度总结</div>
+
+          <div class="info-row">
+            <div class="year" id="pv-year">2025</div>
+            <div class="meta">
+              <div>Pen Name：<span id="pv-penName"></span></div>
+              <div>Total Words：<span id="pv-totalWords"></span></div>
+            </div>
+          </div>
+
+          <div id="pv-tags" class="tags"></div>
+
+          <div class="reflection">
+            <div class="ref-title">This Year</div>
+            <div class="ref-text" id="pv-reflection"></div>
+          </div>
+        </div>
+
+        <div class="poster-months">
+          <div class="months-title">你的月度写作记录</div>
+          <div class="months-timeline" id="pv-months"></div>
+        </div>
+
+      </div>
+    </section>
+  </main>
 
   <script src="script.js"></script>
 </body>
