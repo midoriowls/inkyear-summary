@@ -74,7 +74,25 @@ document.addEventListener("input", (e) => {
 // 初次渲染一下默认值
 document.addEventListener("DOMContentLoaded", () => {
   updatePreview();
+
+  // 年份按钮逻辑
+  const yearButtons = document.querySelectorAll(".year-btn");
+  const yearInput = document.querySelector('[data-bind="year"]');
+
+  yearButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const year = btn.dataset.year;
+      if (yearInput) {
+        yearInput.value = year;
+        updatePreview();
+      }
+      // 高亮当前
+      yearButtons.forEach((b) => b.classList.remove("pill-secondary"));
+      btn.classList.add("pill-secondary");
+    });
+  });
 });
+
 
 // 导出按钮（之后实现）
 document.getElementById("exportBtn").addEventListener("click", () => {
