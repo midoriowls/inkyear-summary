@@ -51,14 +51,24 @@
 
       <form id="monthForm" class="month-form" autocomplete="off">
         <div class="field">
-          <label>月份</label>
+          <label>月份 <span class="hint">(必填，例如：March / 三月)</span></label>
           <input type="text" id="monthName" placeholder="例：March / 三月" />
         </div>
 
         <div class="field">
-          <label>本月写了什么（可长段）</label>
+          <label>本月代表作 / 亮点 <span class="hint">(可选，文章名或事件)</span></label>
+          <input type="text" id="monthTitle" placeholder="例：《开封府地契》番外完结" />
+        </div>
+
+        <div class="field">
+          <label>本月关键词 <span class="hint">(可选，空格或逗号分隔)</span></label>
+          <input type="text" id="monthTags" placeholder="例：修文 通宵 开封府少侠" />
+        </div>
+
+        <div class="field">
+          <label>本月写作节选 / 想说的话 <span class="hint">(可选，可长段)</span></label>
           <textarea id="monthText" rows="3"
-            placeholder="例：三月沉迷写开封府少侠番外，修文修到怀疑人生。"></textarea>
+            placeholder="例：三月基本在和自己过不去，一边想删号一边又把少侠写到了新地方。"></textarea>
         </div>
 
         <button type="submit" class="btn-add-month">➕ 添加一条记录</button>
@@ -116,6 +126,11 @@
       </div>
     </section>
   </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
 
   <script src="script.js"></script>
 </body>
