@@ -2,182 +2,122 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <title>InkYear 写手年终工作台</title>
+  <title>写手年度总结 · Vintage 版</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="style.css" />
 </head>
-
-<body class="theme-ink">
+<body>
   <header class="topbar">
     <div class="brand">
-      <div class="logo">✒</div>
-      <span>InkYear · 写手年终工作台</span>
-    </div>
-
-    <div class="top-actions">
-      <!-- 年份切换 -->
-      <button class="pill pill-secondary year-btn" data-year="2024">2024</button>
-      <button class="pill pill-ghost year-btn" data-year="2025">2025</button>
-
-      <!-- 版式切换 -->
-      <select id="layoutSelect" class="pill pill-select">
-        <option value="classic">版式 A</option>
-        <option value="compact">版式 B</option>
-      </select>
-
-      <!-- 主题切换 -->
-      <select id="themeSelect" class="pill pill-select">
-        <option value="ink">墨青</option>
-        <option value="rose">玫瑰</option>
-        <option value="night">夜间</option>
-      </select>
-
-      <!-- 导出按钮（功能稍后实现） -->
-      <button id="exportBtn" class="pill pill-primary">导出海报</button>
+      <span class="brand-mark">✒</span>
+      <span class="brand-text">写手年度总结 · Vintage</span>
     </div>
   </header>
 
   <main class="layout">
-    <!-- 左侧编辑区 -->
+    <!-- 左侧：编辑区 -->
     <section class="editor">
-      <h2 class="section-title">基础信息</h2>
+      <h2 class="section-title">基本信息</h2>
 
       <div class="field">
         <label>年份</label>
-        <input type="text" data-bind="year" placeholder="例：2024" />
+        <input type="text" data-field="year" placeholder="例：2025" />
       </div>
 
       <div class="field">
         <label>笔名 / ID</label>
-        <input type="text" data-bind="penname" placeholder="例：不羡仙" />
+        <input type="text" data-field="penName" placeholder="例：不羡仙" />
       </div>
 
       <div class="field">
-        <label>年度标题</label>
-        <input type="text" data-bind="title" placeholder="例：在修文与截稿线之间摇摆的一年" />
+        <label>总字数</label>
+        <input type="text" data-field="totalWords" placeholder="例：320,000" />
       </div>
 
       <div class="field">
-        <label>年度关键词（空格/逗号分隔）</label>
-        <input type="text" data-bind="tags" placeholder="例：同人 文手 乙女游戏" />
+        <label>关键词（空格或逗号分隔）</label>
+        <input type="text" data-field="tags" placeholder="例：同人 文手 年度总结" />
+      </div>
+
+      <div class="field">
+        <label>今年的总体感想</label>
+        <textarea data-field="reflection" rows="4"
+          placeholder="例：这一年写得跌跌撞撞，但也收到了很多意想不到的喜欢。"></textarea>
       </div>
 
       <hr class="divider" />
 
-      <h2 class="section-title">创作数据</h2>
+      <h2 class="section-title">每月写作记录（可选）</h2>
 
-      <div class="field-group">
+      <form id="monthForm" class="month-form" autocomplete="off">
         <div class="field">
-          <label>
-            <input type="checkbox" class="toggle" data-target="worksCount" checked />
-            显示作品篇数
-          </label>
-          <input type="number" data-bind="worksCount" placeholder="例：12" />
+          <label>月份</label>
+          <input type="text" id="monthName" placeholder="例：March / 三月" />
         </div>
 
         <div class="field">
-          <label>
-            <input type="checkbox" class="toggle" data-target="totalWords" checked />
-            显示总字数
-          </label>
-          <input type="text" data-bind="totalWords" placeholder="例：320,000" />
+          <label>本月写了什么（可长段）</label>
+          <textarea id="monthText" rows="3"
+            placeholder="例：三月沉迷写开封府少侠番外，修文修到怀疑人生。"></textarea>
         </div>
+
+        <button type="submit" class="btn-add-month">➕ 添加一条记录</button>
+      </form>
+
+      <div id="monthList" class="month-list">
+        <!-- 左侧当前月份列表（可删除） -->
       </div>
-
-      <div class="field">
-        <label>代表作标题</label>
-        <input type="text" data-bind="highlightTitle" placeholder="例：《开封府地契》" />
-      </div>
-
-      <div class="field">
-        <label>代表作 CP / 标签</label>
-        <input type="text" data-bind="highlightCP" placeholder="例：赵光义 x 原创少侠" />
-      </div>
-
-      <hr class="divider" />
-
-      <h2 class="section-title">写给自己的话</h2>
-
-      <div class="field">
-        <label>
-          <input type="checkbox" class="toggle" data-target="selfComment" checked />
-          显示年度自评
-        </label>
-        <textarea data-bind="selfComment" rows="4"
-          placeholder="例：这一年写得跌跌撞撞，但收到了很多喜欢。"></textarea>
-      </div>
-
-      <div class="field">
-        <label>
-          <input type="checkbox" class="toggle" data-target="readerComment" checked />
-          显示读者评论
-        </label>
-        <textarea data-bind="readerComment" rows="3"
-          placeholder="例：'这篇故事让我度过很糟糕的那周。'"></textarea>
-      </div>
-
     </section>
 
-    <!-- 右侧预览区 -->
+    <!-- 右侧：预览区 -->
     <section class="preview-wrap">
-      <div class="card" id="previewCard">
+      <div class="poster" id="poster">
+        <!-- 顶部绿色横条 -->
+        <div class="poster-header">
+          <div class="poster-header-en">YEAR-END SUMMARY</div>
+        </div>
 
-        <div class="card-header">
-          <div class="card-year" id="pv-year">2024</div>
-          <div class="card-meta">
-            <div class="card-tag">WRITING WRAP-UP</div>
-            <div class="card-penname" id="pv-penname">不羡仙</div>
+        <!-- 主体上半部分：标题 + 年份 + 基本信息 -->
+        <div class="poster-main">
+          <div class="poster-title-cn">文手年度总结</div>
+          <div class="poster-main-row">
+            <div class="poster-year" id="pv-year">2025</div>
+            <div class="poster-meta">
+              <div class="meta-line">
+                Pen Name：<span id="pv-penName">不羡仙</span>
+              </div>
+              <div class="meta-line">
+                Total Words：<span id="pv-totalWords">320,000</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="poster-tags" id="pv-tags">
+            <span class="tag-pill">同人</span>
+            <span class="tag-pill">文手</span>
+            <span class="tag-pill">2025</span>
+          </div>
+
+          <div class="poster-reflection">
+            <div class="ref-label">This Year</div>
+            <p class="ref-text" id="pv-reflection">
+              这一年写得跌跌撞撞，但也收到了很多意想不到的喜欢。
+            </p>
           </div>
         </div>
 
-        <div class="card-title" id="pv-title">在修文与截稿线之间摇摆的一年</div>
-
-        <div class="card-tags" id="pv-tags">
-          <span class="chip">同人</span>
-          <span class="chip">文手</span>
-          <span class="chip">2024</span>
-        </div>
-
-        <div class="card-stats">
-          <div class="stat stat-works">
-            <div class="stat-label">作品篇数</div>
-            <div class="stat-value" id="pv-worksCount">12</div>
+        <!-- 下半部分：月份时间线 -->
+        <div class="poster-months">
+          <div class="months-title">你的月度写作关键词</div>
+          <div class="months-timeline" id="pv-months">
+            <!-- 动态插入月份 -->
           </div>
-
-          <div class="stat stat-words">
-            <div class="stat-label">总字数</div>
-            <div class="stat-value" id="pv-totalWords">320,000</div>
-          </div>
-        </div>
-
-        <div class="card-highlight">
-          <div class="highlight-label">代表作</div>
-          <div class="highlight-title" id="pv-highlightTitle">《开封府地契》</div>
-          <div class="highlight-sub" id="pv-highlightCP">赵光义 x 原创少侠</div>
-        </div>
-
-        <div class="card-block block-self">
-          <div class="block-label">这一年的我</div>
-          <p class="block-text" id="pv-selfComment">
-            这一年写得跌跌撞撞，但也收到了很多意想不到的喜欢。
-          </p>
-        </div>
-
-        <div class="card-block block-reader">
-          <div class="block-label">想记住的一条评论</div>
-          <p class="block-text" id="pv-readerComment">
-            “谢谢你写了这样一篇故事，让我在糟糕的一周里睡得很好。”
-          </p>
-        </div>
-
-        <div class="card-footer">
-          <span>InkYear · Writing Summary</span>
         </div>
       </div>
     </section>
-
   </main>
 
   <script src="script.js"></script>
 </body>
 </html>
+
