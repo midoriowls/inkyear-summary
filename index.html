@@ -66,9 +66,15 @@
         </div>
 
         <div class="field">
-          <label>本月写作节选 / 想说的话 <span class="hint">(可选，可长段)</span></label>
-          <textarea id="monthText" rows="3"
+          <label>本月写了什么（正文 / 节选）<span class="hint">(可选，可长段，支持空行)</span></label>
+          <textarea id="monthWrite" rows="3"
             placeholder="例：三月基本在和自己过不去，一边想删号一边又把少侠写到了新地方。"></textarea>
+        </div>
+
+        <div class="field">
+          <label>想说的话 <span class="hint">(可选，写给这个月写作的评价或心情)</span></label>
+          <textarea id="monthNote" rows="2"
+            placeholder="例：可能不是最高产的一月，但写下去这件事本身已经很了不起。"></textarea>
         </div>
 
         <button type="submit" class="btn-add-month">➕ 添加一条记录</button>
@@ -130,6 +136,7 @@
   <script src="script.js"></script>
 </body>
 </html>
+
 
 
   <script src="script.js"></script>
