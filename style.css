@@ -12,12 +12,12 @@ body {
 }
 
 /* ---------- 主题背景：两种复古味 ---------- */
-/* 默认：你现在这套奶咖×墨绿 */
+/* 默认：奶咖×墨绿 */
 body.theme-vintage {
   background: #d9d1c6;
 }
 
-/* 另一套：明显粉调日系复古色，一眼就看出区别 */
+/* 另一套：偏粉日系复古，小红书风 */
 body.theme-vintage-alt {
   background: #f1e4ea;
 }
@@ -71,7 +71,6 @@ body.theme-vintage-alt {
 }
 
 /* ---------- 布局 ---------- */
-/* ★ 改成 min-height，不再强行卡死等于一屏高度，海报能跟着内容整体变长 */
 .layout {
   display: flex;
   align-items: flex-start;
@@ -86,7 +85,6 @@ body.theme-vintage-alt {
   overflow-y: auto;
 }
 
-/* ★ preview 不再单独滚动，交给整个页面滚动，海报高度不会被容器卡住 */
 .preview {
   width: 58%;
   padding: 1.2rem;
@@ -180,8 +178,7 @@ select:focus {
   cursor: pointer;
 }
 
-/* ---------- 海报整体：长纸张，无固定高度 ---------- */
-/* ★ 这里是关键：display:block + height:auto，不再用 flex 容器当卡片本体 */
+/* ---------- 海报整体：长纸张 ---------- */
 .poster {
   width: 100%;
   max-width: 460px;
@@ -189,13 +186,13 @@ select:focus {
   border-radius: 0.7rem;
   box-shadow: 0 10px 26px rgba(0, 0, 0, 0.18);
   border: 1px solid #d1c4b5;
-  overflow: hidden;      /* 虚线不会露到外面 */
+  overflow: hidden;
   display: block;
-  height: auto;          /* 明确声明由内容决定高度 */
+  height: auto;
+  position: relative;
 }
 
-/* ========== 头部：三种风格共用的结构 ========== */
-
+/* ========== 头部：三种风格共用 ========== */
 .poster-header {
   padding: 0.75rem 1.6rem 0.6rem;
   background: #556f61;
@@ -324,7 +321,7 @@ select:focus {
   white-space: pre-line;
 }
 
-/* ---------- 月度时间线（杂志排版 B） ---------- */
+/* ---------- 月度时间线 ---------- */
 .poster-months {
   padding: 0.6rem 1.6rem 1.4rem;
 }
@@ -342,7 +339,7 @@ select:focus {
   padding-bottom: 1rem;
 }
 
-/* 垂直虚线，只在卡片内部 */
+/* 垂直虚线（杂志版、stack 版使用） */
 .months-timeline::before {
   content: "";
   position: absolute;
@@ -360,125 +357,9 @@ select:focus {
   font-size: 0.8rem;
 }
 
-/* 左侧：月份 + 标题 + 标签 + note */
-.month-left {
-  width: 36%;
-  padding-right: 0.8rem;
-  text-align: left;
-  color: #4c3e33;
-}
+/* 月份之间的装饰线条（你要的那个） */
+.month-ro
 
-.month-month {
-  font-family: "Georgia", serif;
-  font-size: 0.9rem;
-  letter-spacing: 0.12em;
-}
-
-.month-title {
-  margin-top: 0.1rem;
-  font-size: 0.82rem;
-  font-weight: 600;
-}
-
-.month-tags {
-  margin-top: 0.2rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.18rem;
-}
-
-.month-tag-pill {
-  border-radius: 999px;
-  border: 1px solid #c5b5a3;
-  padding: 0 0.35rem;
-  font-size: 0.68rem;
-}
-
-.month-note {
-  margin-top: 0.3rem;
-  font-size: 0.76rem;
-  line-height: 1.7;
-  white-space: pre-line;
-}
-
-/* 中间圆点 */
-.month-dot {
-  position: absolute;
-  left: calc(36% - 0.35rem);
-  top: 1.25rem;
-  width: 0.65rem;
-  height: 0.65rem;
-  border-radius: 50%;
-  border: 1px solid #8d7f6f;
-  background: #e7ddcf;
-}
-
-/* 右侧正文 */
-.month-right {
-  width: 64%;
-  padding-left: 0.9rem;
-}
-
-.month-write {
-  font-size: 0.8rem;
-  line-height: 1.9;
-  white-space: pre-line;
-}
-
-/* ---------- 落款区 ---------- */
-.poster-footer {
-  padding: 0.6rem 1.6rem 0.9rem;
-  border-top: 1px solid #d0c4b6;
-  font-size: 0.75rem;
-  color: #6a5b58;
-}
-
-.footer-line + .footer-line {
-  margin-top: 0.15rem;
-}
-
-/* ---------- 主题切换，对海报也生效（颜色差异拉大） ---------- */
-body.theme-vintage .poster {
-  background: #e7ddcf;
-  border-color: #d1c4b5;
-}
-body.theme-vintage .poster-header {
-  background: #556f61;
-}
-body.theme-vintage .months-title {
-  color: #6e5c4e;
-}
-
-body.theme-vintage-alt .poster {
-  background: #fdf4f7;
-  border-color: #e0b3c2;
-}
-body.theme-vintage-alt .poster-header {
-  background: #b65c7a;
-}
-body.theme-vintage-alt .months-title {
-  color: #b65c7a;
-}
-body.theme-vintage-alt .month-dot {
-  background: #fdf4f7;
-}
-
-/* ---------- 响应式 ---------- */
-@media (max-width: 900px) {
-  .layout {
-    flex-direction: column;
-  }
-  .editor,
-  .preview {
-    width: 100%;
-  }
-  .preview {
-    padding: 1rem;
-  }
-  .poster {
-    max-width: 380px;
-  }
-}
 
 
 
