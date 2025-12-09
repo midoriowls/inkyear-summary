@@ -15,7 +15,7 @@
       <span class="brand-text">写手年度总结 · 复古杂志版</span>
     </div>
     <div class="actions">
-      <button id="btn-theme" class="btn">切换复古样式</button>
+      <button id="btn-theme" class="btn">切换配色</button>
       <button id="btn-download" class="btn btn-primary">导出 PNG</button>
     </div>
   </header>
@@ -46,8 +46,17 @@
       </div>
 
       <div class="field">
-        <label>年度总结（会放进上方小框）</label>
+        <label>年度总结（放在上方小框里）</label>
         <textarea rows="4" data-field="reflection"></textarea>
+      </div>
+
+      <div class="field">
+        <label>海报头部样式</label>
+        <select id="headerStyle">
+          <option value="a">日系文库本</option>
+          <option value="b">日系杂志 CUT</option>
+          <option value="c">英文报纸风</option>
+        </select>
       </div>
 
       <hr class="divider" />
@@ -76,7 +85,7 @@
         </div>
 
         <div class="field">
-          <label>想说的话（可选，小注脚放在左侧）</label>
+          <label>想说的话（可选，小注脚放左侧）</label>
           <textarea id="monthNote" rows="2"></textarea>
         </div>
 
@@ -86,18 +95,18 @@
       <div id="monthList" class="month-list"></div>
     </section>
 
-    <!-- 右侧预览 -->
+    <!-- 右侧预览：长海报 -->
     <section class="preview">
       <div id="poster" class="poster">
-        <!-- 顶部色条 -->
-        <div class="poster-header">
-          <div class="poster-header-en">YEAR-END SUMMARY</div>
+        <!-- 头部：支持多种样式 -->
+        <div class="poster-header header-style-a" id="posterHeader">
+          <div class="header-line-1" id="headerLine1">YEAR-END SUMMARY</div>
+          <div class="header-line-2" id="headerLine2">文手年度总结</div>
+          <div class="header-line-3" id="headerLine3">2025 · Annual Writing Review</div>
         </div>
 
-        <!-- 标题与基本信息 -->
+        <!-- 主体信息 -->
         <div class="poster-main">
-          <div class="poster-title-cn">文手年度总结</div>
-
           <div class="poster-meta-row">
             <div class="poster-year" id="pv-year">2025</div>
             <div class="poster-meta">
@@ -110,7 +119,7 @@
 
           <!-- 年度总结小框 -->
           <div class="summary-box">
-            <div class="summary-label">总结</div>
+            <div class="summary-label">Summary</div>
             <div class="summary-text" id="pv-reflection"></div>
           </div>
         </div>
@@ -120,6 +129,12 @@
           <div class="months-title">Monthly Notes</div>
           <div class="months-timeline" id="pv-months"></div>
         </div>
+
+        <!-- 落款区 -->
+        <div class="poster-footer">
+          <div class="footer-line" id="pv-footer-written"></div>
+          <div class="footer-line" id="pv-footer-designed"></div>
+        </div>
       </div>
     </section>
   </main>
@@ -127,5 +142,6 @@
   <script src="script.js"></script>
 </body>
 </html>
+
 
 
