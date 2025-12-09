@@ -5,10 +5,26 @@ const data = {
   totalWords: "",
   tags: "",
   reflection: "",
-  headerStyle: "a",   // 头部样式 a/b/c
-  layoutStyle: "magazine", // 布局 magazine/poster/stack
-  months: []          // {id, month, title, tags, write, note}
+  headerStyle: "a",
+  layoutStyle: "magazine",
+  months: []
 };
+
+/* -------- 工具：收集所有关键词（全局 + 各月） -------- */
+function collectAllTags() {
+  const set = new Set();
+  (data.tags || "")
+    .split(/[,，\s]+/)
+    .filter(Boolean)
+    .forEach((t) => set.add(t));
+  data.months.forEach((m) => {
+    (m.tags || "")
+      .split(/[,，\s]+/)
+      .filter(Boolean)
+      .forEach((t) => set.add(t));
+  });
+  return Array.from(set);
+}
 
 /* -------- 基础字段绑定 -------- */
 function bindBaseFields() {
@@ -123,32 +139,29 @@ function renderHeader() {
   }
 }
 
-/* -------- 主体+月份+落款+印章 渲染 -------- */
+/* -------- 主体 + 月份 + 落款 + 印章 -------- */
 function renderPoster() {
-  // 基本信息
   document.getElementById("pv-year").textContent = data.year || "";
   document.getElementById("pv-penName").textContent = data.penName || "";
   document.getElementById("pv-totalWords").textContent = data.totalWords || "";
-  document.getElementById("pv-reflection").textContent = data.reflection || "";
+  document.getElementById("pv-reflection").textContent =
+    data.reflection || "";
 
   // 标签
   const tagsWrap = document.getElementById("pv-tags");
   tagsWrap.innerHTML = "";
-  (data.tags || "")
-    .split(/[,，\s]+/)
-    .filter(Boolean)
-    .forEach((t) => {
-      const span = document.createElement("span");
-      span.textContent = t;
-      tagsWrap.appendChild(span);
-    });
+  collectAllTags().forEach((t) => {
+    const span = document.createElement("span");
+    span.textContent = t;
+    tagsWrap.appendChild(span);
+  });
 
   // 布局 class
   const poster = document.getElementById("poster");
   poster.classList.remove("layout-magazine", "layout-poster", "layout-stack");
   poster.classList.add(`layout-${data.layoutStyle}`);
 
-  // 月份时间线
+  // 月份
   const container = document.getElementById("pv-months");
   container.innerHTML = "";
 
@@ -158,7 +171,6 @@ function renderPoster() {
     const row = document.createElement("div");
     row.className = "month-row";
 
-    // 左列
     const left = document.createElement("div");
     left.className = "month-left";
 
@@ -196,11 +208,9 @@ function renderPoster() {
       left.appendChild(noteEl);
     }
 
-    // 圆点（海报块状版不需要，但用 CSS 控制显隐）
     const dot = document.createElement("div");
     dot.className = "month-dot";
 
-    // 右列正文
     const right = document.createElement("div");
     right.className = "month-right";
     const writeEl = document.createElement("div");
@@ -222,7 +232,7 @@ function renderPoster() {
     : "";
   footerDesigned.textContent = "card designed by Morinorane";
 
-  // 复古印章
+  // 印章
   const stamp = document.getElementById("pv-stamp");
   const year = data.year || "";
   const name = data.penName || "";
@@ -231,7 +241,7 @@ function renderPoster() {
     : name || "writer";
 }
 
-/* -------- 关键词封面渲染（tag cloud） -------- */
+/* -------- 封面：关键词云 -------- */
 function renderCover() {
   const yearEl = document.getElementById("cover-year");
   const authorEl = document.getElementById("cover-author");
@@ -241,10 +251,7 @@ function renderCover() {
   authorEl.textContent = data.penName ? `by ${data.penName}` : "";
 
   tagsWrap.innerHTML = "";
-  const tags = (data.tags || "")
-    .split(/[,，\s]+/)
-    .filter(Boolean);
-
+  const tags = collectAllTags();
   if (!tags.length) return;
 
   const sizes = ["0.95rem", "1.05rem", "1.15rem", "1.25rem", "1.35rem"];
@@ -254,8 +261,8 @@ function renderCover() {
     span.className = "cover-tag";
     const size = sizes[idx % sizes.length];
     span.style.fontSize = size;
-    // 随机一点透明度 & 字距，做出“云”的感觉
     span.style.opacity = 0.85 + Math.random() * 0.15;
+    span.style.transform = `translateY(${(Math.random() - 0.5) * 6}px)`;
     span.textContent = t;
     tagsWrap.appendChild(span);
   });
@@ -303,7 +310,7 @@ function exportLongImage() {
   });
 }
 
-/* -------- 导出：小红书分图（切割长图） -------- */
+/* -------- 导出：小红书分图（尽量在月份边界切） -------- */
 function exportXHS() {
   const poster = document.getElementById("poster");
   if (typeof html2canvas === "undefined") {
@@ -314,33 +321,96 @@ function exportXHS() {
     scale: 2,
     backgroundColor: null
   }).then((canvas) => {
-    const totalHeight = canvas.height;
     const width = canvas.width;
-    // 小红书常见竖图比例接近 4:5，这里取 height ≈ 1.25 * width
-    const segHeight = Math.round(width * 1.25);
+    const totalHeight = canvas.height;
+
+    const posterDomHeight = poster.offsetHeight || 1;
+    const scale = totalHeight / posterDomHeight;
+
+    const rows = Array.from(
+      document.querySelectorAll("#pv-months .month-row")
+    );
+
+    // 如果没有月份，就按老办法等距切
+    if (!rows.length) {
+      simpleSlice(canvas, width, totalHeight);
+      return;
+    }
+
+    const bounds = rows.map((r) => {
+      const top = r.offsetTop * scale;
+      const bottom = (r.offsetTop + r.offsetHeight) * scale;
+      return { top, bottom };
+    });
+
+    const pageHeight = Math.round(width * 1.25); // 4:5 比例
+    const segments = [];
+
+    let currentStart = 0;
+    let lastBottom = bounds[0].bottom;
+
+    bounds.forEach((b) => {
+      if (b.bottom - currentStart > pageHeight) {
+        // 在上一行结束的位置切
+        segments.push({ y: currentStart, h: lastBottom - currentStart });
+        currentStart = lastBottom;
+      }
+      lastBottom = b.bottom;
+    });
+
+    // 最后一页
+    segments.push({ y: currentStart, h: totalHeight - currentStart });
 
     let index = 1;
-    for (let y = 0; y < totalHeight; y += segHeight) {
-      const h = Math.min(segHeight, totalHeight - y);
+    segments.forEach((seg) => {
+      if (seg.h <= 0) return;
       const c = document.createElement("canvas");
       c.width = width;
-      c.height = h;
+      c.height = seg.h;
       const ctx = c.getContext("2d");
-      ctx.drawImage(canvas, 0, y, width, h, 0, 0, width, h);
-
+      ctx.drawImage(
+        canvas,
+        0,
+        seg.y,
+        width,
+        seg.h,
+        0,
+        0,
+        width,
+        seg.h
+      );
       const link = document.createElement("a");
       link.download = `year-end-summary-xhs-${index}.png`;
       link.href = c.toDataURL("image/png");
       link.click();
       index++;
-    }
+    });
   }).catch((err) => {
     console.error(err);
     alert("导出小红书分图时出了点问题，可以稍后再试一次。");
   });
 }
 
-/* -------- 导出：关键词封面图 -------- */
+// 备用：没有月份时的简单等距切图
+function simpleSlice(canvas, width, totalHeight) {
+  const pageHeight = Math.round(width * 1.25);
+  let index = 1;
+  for (let y = 0; y < totalHeight; y += pageHeight) {
+    const h = Math.min(pageHeight, totalHeight - y);
+    const c = document.createElement("canvas");
+    c.width = width;
+    c.height = h;
+    const ctx = c.getContext("2d");
+    ctx.drawImage(canvas, 0, y, width, h, 0, 0, width, h);
+    const link = document.createElement("a");
+    link.download = `year-end-summary-xhs-${index}.png`;
+    link.href = c.toDataURL("image/png");
+    link.click();
+    index++;
+  }
+}
+
+/* -------- 导出：封面图 -------- */
 function exportCoverImage() {
   const cover = document.getElementById("coverPoster");
   if (typeof html2canvas === "undefined") {
@@ -361,23 +431,21 @@ function exportCoverImage() {
   });
 }
 
-/* -------- 分享链接生成：把 data 编进 URL -------- */
+/* -------- 分享链接：只展示成品页 -------- */
 function bindShareLink() {
   const btn = document.getElementById("btn-share");
   btn.addEventListener("click", async () => {
     try {
       const jsonStr = JSON.stringify(data);
-      // 解决中文编码：先转 UTF-8 再 btoa
       const encoded = btoa(unescape(encodeURIComponent(jsonStr)));
-      const url = `${location.origin}${location.pathname}?d=${encodeURIComponent(
+      const url = `${location.origin}${location.pathname}?view=read&d=${encodeURIComponent(
         encoded
       )}`;
 
       if (navigator.clipboard && navigator.clipboard.writeText) {
         await navigator.clipboard.writeText(url);
-        alert("当前卡片的分享链接已复制到剪贴板！");
+        alert("当前卡片的浏览链接已复制到剪贴板！");
       } else {
-        // 兜底
         prompt("复制下面这条链接：", url);
       }
     } catch (e) {
@@ -387,10 +455,14 @@ function bindShareLink() {
   });
 }
 
-/* -------- 从 URL 中恢复 data -------- */
+/* -------- 从 URL 中恢复 data + 进入只读模式 -------- */
 function restoreFromURL() {
   const params = new URLSearchParams(window.location.search);
   const encoded = params.get("d");
+  const view = params.get("view");
+  if (view === "read") {
+    document.body.classList.add("read-only");
+  }
   if (!encoded) return;
   try {
     const jsonStr = decodeURIComponent(
@@ -399,19 +471,21 @@ function restoreFromURL() {
     const obj = JSON.parse(jsonStr);
     Object.assign(data, obj);
 
-    // 把数据写回表单
-    document.querySelector('[data-field="year"]').value = data.year || "";
-    document.querySelector('[data-field="penName"]').value =
-      data.penName || "";
-    document.querySelector('[data-field="totalWords"]').value =
-      data.totalWords || "";
-    document.querySelector('[data-field="tags"]').value = data.tags || "";
-    document.querySelector('[data-field="reflection"]').value =
-      data.reflection || "";
-    document.getElementById("headerStyle").value =
-      data.headerStyle || "a";
-    document.getElementById("layoutStyle").value =
-      data.layoutStyle || "magazine";
+    // 把数据写回表单（如果不是只读模式）
+    if (view !== "read") {
+      document.querySelector('[data-field="year"]').value = data.year || "";
+      document.querySelector('[data-field="penName"]').value =
+        data.penName || "";
+      document.querySelector('[data-field="totalWords"]').value =
+        data.totalWords || "";
+      document.querySelector('[data-field="tags"]').value = data.tags || "";
+      document.querySelector('[data-field="reflection"]').value =
+        data.reflection || "";
+      document.getElementById("headerStyle").value =
+        data.headerStyle || "a";
+      document.getElementById("layoutStyle").value =
+        data.layoutStyle || "magazine";
+    }
 
     renderMonthList();
     renderAll();
@@ -420,7 +494,7 @@ function restoreFromURL() {
   }
 }
 
-/* -------- 绑定按钮 -------- */
+/* -------- 绑定导出按钮 -------- */
 function bindExportButtons() {
   document
     .getElementById("btn-download-long")
@@ -446,6 +520,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderAll();
   renderMonthList();
 });
+
 
 
 
