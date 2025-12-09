@@ -161,7 +161,7 @@ function renderPoster() {
   });
 }
 
-// 主题切换（两种复古味道）
+// 主题切换：两个 class 来回切
 function bindThemeToggle() {
   const btn = document.getElementById("btn-theme");
   btn.addEventListener("click", () => {
@@ -175,32 +175,23 @@ function bindThemeToggle() {
   });
 }
 
-// PNG 导出
+// 导出 PNG：加一个兜底提示，防止 html2canvas 没加载
 function bindDownload() {
   const btn = document.getElementById("btn-download");
   btn.addEventListener("click", () => {
+    if (typeof html2canvas === "undefined") {
+      alert("导出功能依赖的库未加载成功，请检查网络后刷新页面再试。");
+      return;
+    }
     const poster = document.getElementById("poster");
     html2canvas(poster, {
       scale: 2,
       backgroundColor: null
     }).then((canvas) => {
       const link = document.createElement("a");
-      link.download = `year-end-summary.png`;
-      link.href = canvas.toDataURL("image/png");
-      link.click();
-    });
-  });
-}
+      link.download = "year-end-summary.png";
+      link.href = canvas.toDataURL("image/p
 
-// 初始化
-document.addEventListener("DOMContentLoaded", () => {
-  bindBaseFields();
-  bindMonthForm();
-  bindThemeToggle();
-  bindDownload();
-  renderPoster();
-  renderMonthList();
-});
 
 
 
