@@ -551,9 +551,10 @@ body.theme-vintage-alt .month-dot {
 }
 
 /* ---------- 关键词封面卡片 ---------- */
+/* ---------- 封面：文库本风 ---------- */
 .cover-poster {
   position: absolute;
-  left: -9999px;
+  left: -9999px;     /* 平时隐藏，只导出时截图 */
   top: 0;
   width: 600px;
   height: 800px;
@@ -564,11 +565,38 @@ body.theme-vintage-alt .month-dot {
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+}
+
+/* 左侧深绿色竖条 */
+.cover-poster::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 72px;
+  background: #556f61;
+}
+
+/* 右下角小色块 */
+.cover-poster::after {
+  content: "";
+  position: absolute;
+  right: 40px;
+  bottom: 48px;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  background: #556f61;
+  opacity: 0.9;
 }
 
 .cover-inner {
-  width: 80%;
-  text-align: center;
+  position: relative;
+  width: 70%;
+  margin-left: 90px;    /* 为左侧竖条腾位置 */
+  text-align: left;
 }
 
 .cover-year {
@@ -580,30 +608,35 @@ body.theme-vintage-alt .month-dot {
 
 .cover-title {
   margin-top: 0.4rem;
-  font-size: 1rem;
+  font-size: 0.95rem;
   letter-spacing: 0.18em;
   color: #6a5b54;
 }
 
 .cover-author {
-  margin-top: 0.3rem;
-  font-size: 0.8rem;
+  margin-top: 0.6rem;
+  font-size: 0.78rem;
   color: #7b6a5e;
 }
 
+/* 中间那句话：左侧有一条细竖线，像引用 */
 .cover-quote {
-  margin-top: 1.6rem;
+  margin-top: 1.8rem;
   font-size: 0.9rem;
   line-height: 1.9;
   color: #4a4238;
   white-space: pre-line;
+  border-left: 2px solid #c1b2a4;
+  padding-left: 0.75rem;
 }
 
+/* 底部 meta：笔名 + 字数 */
 .cover-meta {
-  margin-top: 2.2rem;
+  margin-top: 2.4rem;
   font-size: 0.78rem;
   color: #7b6a6a;
 }
+
 
 
 /* ---------- 响应式 ---------- */
