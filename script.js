@@ -190,7 +190,25 @@ function bindDownload() {
     }).then((canvas) => {
       const link = document.createElement("a");
       link.download = "year-end-summary.png";
-      link.href = canvas.toDataURL("image/p
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    }).catch((err) => {
+      console.error(err);
+      alert("导出时出了点小问题，可以再试一次，或者稍后再试。");
+    });
+  });
+}
+
+// 初始化
+document.addEventListener("DOMContentLoaded", () => {
+  bindBaseFields();
+  bindMonthForm();
+  bindThemeToggle();
+  bindDownload();
+  renderPoster();
+  renderMonthList();
+});
+
 
 
 
