@@ -1,50 +1,73 @@
-/* --------------------------- */
-/* 基础样式 & 复古排版 */
-/* --------------------------- */
-
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  font-family: "PingFang SC", serif;
+  font-family: "PingFang SC", -apple-system, BlinkMacSystemFont, system-ui,
+    "Segoe UI", sans-serif;
   line-height: 1.7;
 }
 
-/* -------- 顶栏 -------- */
+/* ---------- 主题背景（两种小差异复古样式） ---------- */
+body.theme-vintage {
+  background: #d9d1c6;
+}
+body.theme-vintage-alt {
+  background: #cfc6b8;
+}
 
+/* ---------- 顶栏 ---------- */
 .topbar {
+  height: 3rem;
+  padding: 0 1.1rem;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 0.6rem 1rem;
-  border-bottom: 1px solid #b7b0a6;
+  justify-content: space-between;
+  border-bottom: 1px solid #b7afa3;
+  background: #e8dfd3;
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: .4rem;
-  font-size: .9rem;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  color: #3e4b40;
 }
 
 .brand-mark {
   width: 1.5rem;
   height: 1.5rem;
   border-radius: 999px;
-  border: 1px solid #37473c;
+  border: 1px solid #3e4b40;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .actions .btn {
-  margin-left: .5rem;
+  margin-left: 0.4rem;
 }
 
-/* -------- 布局 -------- */
+/* ---------- 按钮 ---------- */
+.btn,
+.btn-primary {
+  padding: 0.35rem 0.9rem;
+  font-size: 0.8rem;
+  border-radius: 999px;
+  border: 1px solid #4b5c50;
+  background: #f9f3ea;
+  cursor: pointer;
+}
+.btn-primary {
+  background: #4b5c50;
+  color: #fdfaf5;
+}
 
+/* ---------- 布局 ---------- */
 .layout {
   display: flex;
   height: calc(100vh - 3rem);
@@ -52,270 +75,310 @@ body {
 
 .editor {
   width: 42%;
-  padding: 1rem;
+  padding: 1rem 1.2rem;
+  border-right: 1px solid #c5baad;
+  background: #f3e8da;
   overflow-y: auto;
-  border-right: 1px solid #cbbfb0;
 }
 
 .preview {
   width: 58%;
-  padding: 1.3rem;
+  padding: 1.2rem;
   display: flex;
   justify-content: center;
   overflow-y: auto;
 }
 
-/* ------------- 按钮 ------------- */
-
-.btn,
-.btn-primary {
-  padding: .35rem .9rem;
-  font-size: .8rem;
-  border-radius: 999px;
-  cursor: pointer;
-  border: 1px solid #54645b;
-  background: #f9f4ee;
+/* ---------- 表单 ---------- */
+.section-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #3e4b40;
+  margin: 0 0 0.8rem;
 }
-
-.btn-primary {
-  background: #54645b;
-  color: #fff;
-  border-color: #54645b;
-}
-
-/* -------- 输入区 -------- */
 
 .field {
-  margin-bottom: .8rem;
+  margin-bottom: 0.85rem;
 }
 
 .field label {
   display: block;
-  font-size: .78rem;
-  color: #5a4f44;
+  font-size: 0.8rem;
+  color: #6a5b4c;
+  margin-bottom: 0.25rem;
 }
 
 input,
 textarea {
   width: 100%;
-  border-radius: .4rem;
-  border: 1px solid #c4b8a8;
-  padding: .45rem;
-  background: #fcf9f4;
-  font-size: .8rem;
+  border-radius: 0.4rem;
+  border: 1px solid #c8bbac;
+  padding: 0.45rem 0.6rem;
+  font-size: 0.8rem;
+  background: #fdf7ef;
+  outline: none;
 }
 
 textarea {
   resize: vertical;
 }
 
-/* --------------------- */
-/*     预览海报         */
-/* --------------------- */
-
-.poster {
-  width: 420px;
-  background: #ebe3d9;
-  border-radius: .6rem;
-  box-shadow: 0 12px 24px rgba(0,0,0,.15);
-  padding-bottom: 2rem;
+input:focus,
+textarea:focus {
+  border-color: #4b5c50;
+  box-shadow: 0 0 0 1px rgba(75, 92, 80, 0.15);
 }
 
-.poster-header {
-  background: #556f61;
-  color: #f0eadf;
-  padding: .5rem 1rem;
-  letter-spacing: .2em;
-  font-family: "Georgia", serif;
+.divider {
+  border: none;
+  border-top: 1px dashed #c5baad;
+  margin: 1rem 0;
 }
 
-.poster-main {
-  padding: 1rem 1.3rem;
+.month-form {
+  padding: 0.7rem 0.7rem 0.9rem;
+  border-radius: 0.5rem;
+  border: 1px dashed #c5baad;
+  background: #fbf1e1;
+  margin-bottom: 0.8rem;
 }
 
-.poster-title {
-  font-family: "STSong", serif;
-  font-size: 1.2rem;
-  letter-spacing: .15em;
-  margin-bottom: .8rem;
+.btn-add-month {
+  margin-top: 0.2rem;
+  font-size: 0.78rem;
+  border-radius: 999px;
+  border: 1px solid #4b5c50;
+  background: #4b5c50;
+  color: #fdf7ef;
+  padding: 0.3rem 0.8rem;
+  cursor: pointer;
 }
 
-.info-row {
+.month-list {
+  font-size: 0.8rem;
+  color: #4b4035;
+}
+.month-item-row {
   display: flex;
-  gap: 1.2rem;
+  justify-content: space-between;
+  padding: 0.2rem 0;
+  border-bottom: 1px dotted #d0c4b4;
+}
+.btn-remove {
+  border: none;
+  background: none;
+  font-size: 0.75rem;
+  color: #a1352f;
+  cursor: pointer;
 }
 
-.year {
-  font-size: 1.8rem;
+/* ---------- 海报整体（关键：无固定高度、不裁切） ---------- */
+.poster {
+  width: 100%;
+  max-width: 460px;
+  background: #e7ddcf;
+  border-radius: 0.7rem;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.18);
+  border: 2px solid #c27160;
+  overflow: visible;           /* 高度随内容延伸 */
+}
+
+/* 顶部色条 */
+.poster-header {
+  padding: 0.5rem 1.4rem;
+  background: #556f61;
+  color: #f2eadf;
   font-family: "Georgia", serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.22em;
 }
 
-.meta {
-  font-size: .75rem;
+/* 标题与基本信息 */
+.poster-main {
+  padding: 1.1rem 1.6rem 0.6rem;
 }
 
-/* 标签 */
-.tags {
+.poster-title-cn {
+  font-family: "STSong", "SimSun", serif;
+  font-size: 1.3rem;
+  letter-spacing: 0.18em;
+  text-align: center;
+  margin-bottom: 0.8rem;
+  color: #513b38;
+}
+
+.poster-meta-row {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.poster-year {
+  font-family: "Georgia", serif;
+  font-size: 1.6rem;
+  letter-spacing: 0.12em;
+  color: #4b5c50;
+}
+
+.poster-meta {
+  font-size: 0.78rem;
+  color: #5d5145;
+}
+
+.poster-tags {
+  margin-top: 0.7rem;
   display: flex;
   flex-wrap: wrap;
-  gap: .35rem;
-  margin-top: .7rem;
+  gap: 0.35rem;
+  font-size: 0.72rem;
 }
 
-.tags span {
-  border: 1px solid #b49f83;
-  padding: .1rem .6rem;
+.poster-tags span {
   border-radius: 999px;
-  font-size: .7rem;
+  padding: 0.1rem 0.55rem;
+  border: 1px solid #b49a80;
 }
 
-/* 年度感想 */
-.reflection {
+/* 年度总结小框 */
+.summary-box {
   margin-top: 1rem;
+  border-radius: 0.6rem;
+  border: 1px dashed #c5b2a0;
+  padding: 0.55rem 0.75rem 0.75rem;
+  background: rgba(249, 241, 230, 0.7);
 }
 
-.ref-title {
-  font-size: .75rem;
-  color: #7c6e5d;
-  letter-spacing: .2em;
+.summary-label {
+  font-size: 0.78rem;
+  color: #7a6557;
+  margin-bottom: 0.3rem;
 }
 
-.ref-text {
+.summary-text {
+  font-size: 0.8rem;
+  line-height: 1.8;
   white-space: pre-line;
-  margin-top: .3rem;
-  font-size: .8rem;
 }
 
-/* ---------------- */
-/*  月份时间线排版 */
-/* ---------------- */
-
+/* ---------- 月度时间线（方案 B 杂志排版） ---------- */
 .poster-months {
-  padding: 0 1.3rem;
+  padding: 0.6rem 1.6rem 1.4rem;
+}
+
+.months-title {
+  font-size: 0.85rem;
+  color: #6e5c4e;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
 }
 
 .months-timeline {
   position: relative;
-  margin-top: .7rem;
+  margin-top: 0.8rem;
+  padding-bottom: 1rem;
 }
 
-/* 中线左移 */
+/* 垂直虚线，靠左一些，给正文多空间 */
 .months-timeline::before {
   content: "";
   position: absolute;
-  left: 38%;
+  left: 36%;
   top: 0;
   bottom: 0;
-  border-left: 1px dotted #877c6f;
+  border-left: 1px dotted #8d7f6f;
 }
 
-/* 每行 */
+/* 每一行月份块 */
 .month-row {
-  display: flex;
   position: relative;
-  padding: 1rem 0;
-  font-size: .8rem;
+  display: flex;
+  padding: 1.1rem 0;
+  font-size: 0.8rem;
 }
 
-/* 左列（标题+tag+note） */
+/* 左侧：月份 + 标题 + 标签 + note */
 .month-left {
-  width: 38%;
-  padding-right: .8rem;
-  text-align: right;
-  white-space: pre-line;
+  width: 36%;
+  padding-right: 0.8rem;
+  text-align: left;
+  color: #4c3e33;
 }
 
-.month-label {
-  font-weight: 600;
-  font-family: "Georgia";
+.month-month {
+  font-family: "Georgia", serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.12em;
 }
 
 .month-title {
-  font-size: .82rem;
-  margin-top: .2rem;
+  margin-top: 0.1rem;
+  font-size: 0.82rem;
+  font-weight: 600;
 }
 
 .month-tags {
+  margin-top: 0.2rem;
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: .2rem;
-  margin: .2rem 0;
+  gap: 0.18rem;
 }
 
 .month-tag-pill {
-  border: 1px solid #c5b5a3;
-  padding: 0 .4rem;
   border-radius: 999px;
-  font-size: .68rem;
+  border: 1px solid #c5b5a3;
+  padding: 0 0.35rem;
+  font-size: 0.68rem;
 }
 
 .month-note {
-  margin-top: .3rem;
+  margin-top: 0.3rem;
+  font-size: 0.76rem;
+  line-height: 1.7;
+  white-space: pre-line;
 }
 
-/* 竖线圆点 */
+/* 中间圆点 */
 .month-dot {
   position: absolute;
-  left: calc(38% - .35rem);
-  top: 1.2rem;
-  width: .65rem;
-  height: .65rem;
+  left: calc(36% - 0.35rem);
+  top: 1.25rem;
+  width: 0.65rem;
+  height: 0.65rem;
   border-radius: 50%;
-  border: 1px solid #877c6f;
-  background: #ebe3d9;
+  border: 1px solid #8d7f6f;
+  background: #e7ddcf;
 }
 
-/* 右列正文 */
+/* 右侧正文 */
 .month-right {
-  width: 62%;
-  padding-left: .9rem;
+  width: 64%;
+  padding-left: 0.9rem;
 }
 
 .month-write {
-  white-space: pre-line;
-  line-height: 1.8;
+  font-size: 0.8rem;
+  line-height: 1.9;
+  white-space: pre-line; /* 保留空行 */
 }
 
-/* ----------------------------- */
-/*           主题切换           */
-/* ----------------------------- */
-
-/* Vintage 默认 */
-body.theme-vintage {
-  background: #dcd4c9;
+/* ---------- 响应式（手机上上下排） ---------- */
+@media (max-width: 900px) {
+  .layout {
+    flex-direction: column;
+    height: auto;
+  }
+  .editor,
+  .preview {
+    width: 100%;
+  }
+  .preview {
+    padding: 1rem;
+  }
+  .poster {
+    max-width: 380px;
+  }
 }
 
-body.theme-vintage .poster {
-  background: #ebe3d9;
-}
-
-/* Sepia */
-body.theme-sepia {
-  background: #f3e7cf;
-}
-
-body.theme-sepia .poster {
-  background: #f7eed9;
-}
-
-body.theme-sepia .poster-header {
-  background: #8c6f45;
-}
-
-/* Dark Green */
-body.theme-dark {
-  background: #253228;
-}
-
-body.theme-dark .poster {
-  background: #2f3c34;
-  color: #eee;
-}
-
-body.theme-dark .poster-header {
-  background: #1e2a23;
-}
 
 
 
