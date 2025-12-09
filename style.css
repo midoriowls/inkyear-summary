@@ -11,13 +11,11 @@ body {
   line-height: 1.7;
 }
 
-/* ---------- 主题背景：两种复古味 ---------- */
-/* 默认：奶咖×墨绿 */
+/* ---------- 主题背景 ---------- */
 body.theme-vintage {
   background: #d9d1c6;
 }
 
-/* 另一套：偏粉日系复古，小红书风 */
 body.theme-vintage-alt {
   background: #f1e4ea;
 }
@@ -91,6 +89,23 @@ body.theme-vintage-alt {
   display: flex;
   justify-content: center;
   align-items: flex-start;
+}
+
+/* ---------- 只读模式（分享链接） ---------- */
+body.read-only .editor {
+  display: none;
+}
+body.read-only .layout {
+  justify-content: center;
+}
+body.read-only .preview {
+  width: 100%;
+}
+body.read-only .actions {
+  display: none; /* 分享页就看成品，不给一堆按钮 */
+}
+body.read-only .topbar {
+  justify-content: center;
 }
 
 /* ---------- 表单 ---------- */
@@ -178,7 +193,7 @@ select:focus {
   cursor: pointer;
 }
 
-/* ---------- 海报整体：长纸张 ---------- */
+/* ---------- 海报整体 ---------- */
 .poster {
   width: 100%;
   max-width: 460px;
@@ -192,7 +207,7 @@ select:focus {
   position: relative;
 }
 
-/* ========== 头部：三种风格共用 ========== */
+/* ========== 头部 ========== */
 .poster-header {
   padding: 0.75rem 1.6rem 0.6rem;
   background: #556f61;
@@ -205,7 +220,7 @@ select:focus {
   margin: 0.1rem 0;
 }
 
-/* 样式 A：日系文库本 */
+/* A 文库本 */
 .header-style-a .header-line-1 {
   font-family: "Georgia", serif;
   letter-spacing: 0.22em;
@@ -224,7 +239,7 @@ select:focus {
   opacity: 0.85;
 }
 
-/* 样式 B：日系杂志 CUT */
+/* B CUT */
 .header-style-b {
   background: #5f7466;
 }
@@ -243,7 +258,7 @@ select:focus {
   margin-top: 0.25rem;
 }
 
-/* 样式 C：英文报纸风 */
+/* C 报纸 */
 .header-style-c {
   background: #4d5f55;
 }
@@ -333,13 +348,12 @@ select:focus {
   text-transform: uppercase;
 }
 
+/* 杂志/stack 布局的虚线 */
 .months-timeline {
   position: relative;
   margin-top: 0.8rem;
   padding-bottom: 1rem;
 }
-
-/* 垂直虚线（杂志版、stack 版使用） */
 .months-timeline::before {
   content: "";
   position: absolute;
@@ -357,13 +371,13 @@ select:focus {
   font-size: 0.8rem;
 }
 
-/* 月份之间的装饰线条（你要的那个） */
+/* 你要的装饰线条：月份之间虚线分隔 */
 .month-row + .month-row {
   border-top: 1px dashed #d0c4b6;
   margin-top: 0.2rem;
 }
 
-/* 左侧：月份 + 标题 + 标签 + note */
+/* 左侧 */
 .month-left {
   width: 36%;
   padding-right: 0.8rem;
@@ -430,9 +444,9 @@ select:focus {
 
 /* ---------- 三套布局差异 ---------- */
 
-/* 杂志时间线版（默认）用上面的样式即可 */
+/* 杂志：默认 */
 
-/* 海报块状版：不需要垂直线与圆点，月份块上下堆叠 */
+/* 海报块状版：上下堆叠，无竖线、圆点 */
 .poster.layout-poster .months-timeline::before {
   display: none;
 }
@@ -451,7 +465,7 @@ select:focus {
   display: none;
 }
 
-/* 简洁左右版：线更靠左一点，左列窄一点 */
+/* 简洁左右版：线更靠左，左列窄一点 */
 .poster.layout-stack .months-timeline::before {
   left: 30%;
 }
@@ -477,27 +491,37 @@ select:focus {
   margin-top: 0.15rem;
 }
 
-/* ---------- 复古印章 ---------- */
+/* ---------- 复古印章：重新设计 ---------- */
 .poster-stamp {
   position: absolute;
   right: 1.4rem;
-  bottom: 2.8rem;
-  width: 72px;
-  height: 72px;
+  bottom: 2.4rem;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
-  border: 1px solid #b67b6b;
+  border: 1px solid #b36a5a;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   text-align: center;
-  transform: rotate(-12deg);
-  opacity: 0.75;
+  transform: rotate(-10deg);
+  opacity: 0.8;
   pointer-events: none;
   font-family: "Georgia", serif;
+  letter-spacing: 0.08em;
+  position: absolute;
+  box-shadow: 0 0 0 1px rgba(179, 106, 90, 0.25);
+}
+.poster-stamp::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border-radius: 50%;
+  border: 1px dotted rgba(179, 106, 90, 0.8);
 }
 
-/* ---------- 主题切换，对海报也生效 ---------- */
+/* ---------- 主题切换 ---------- */
 body.theme-vintage .poster {
   background: #e7ddcf;
   border-color: #d1c4b5;
@@ -526,7 +550,7 @@ body.theme-vintage-alt .month-dot {
   background: #fdf4f7;
 }
 
-/* ---------- 关键词封面卡片（隐藏在屏幕外） ---------- */
+/* ---------- 关键词封面卡片 ---------- */
 .cover-poster {
   position: absolute;
   left: -9999px;
@@ -568,7 +592,7 @@ body.theme-vintage-alt .month-dot {
 }
 
 .cover-tags {
-  margin-top: 1.2rem;
+  margin-top: 1.6rem;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -596,6 +620,7 @@ body.theme-vintage-alt .month-dot {
     max-width: 380px;
   }
 }
+
 
 
 
