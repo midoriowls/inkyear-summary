@@ -591,18 +591,20 @@ body.theme-vintage-alt .month-dot {
   color: #7b6a5e;
 }
 
-.cover-tags {
+.cover-quote {
   margin-top: 1.6rem;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.5rem 0.8rem;
+  font-size: 0.9rem;
+  line-height: 1.9;
+  color: #4a4238;
+  white-space: pre-line;
 }
 
-.cover-tag {
-  color: #4b4036;
-  font-weight: 500;
+.cover-meta {
+  margin-top: 2.2rem;
+  font-size: 0.78rem;
+  color: #7b6a6a;
 }
+
 
 /* ---------- 响应式 ---------- */
 @media (max-width: 900px) {
