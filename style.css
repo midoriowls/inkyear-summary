@@ -358,7 +358,244 @@ select:focus {
 }
 
 /* 月份之间的装饰线条（你要的那个） */
-.month-ro
+.month-row + .month-row {
+  border-top: 1px dashed #d0c4b6;
+  margin-top: 0.2rem;
+}
+
+/* 左侧：月份 + 标题 + 标签 + note */
+.month-left {
+  width: 36%;
+  padding-right: 0.8rem;
+  text-align: left;
+  color: #4c3e33;
+}
+
+.month-month {
+  font-family: "Georgia", serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.12em;
+}
+
+.month-title {
+  margin-top: 0.1rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.month-tags {
+  margin-top: 0.2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.18rem;
+}
+
+.month-tag-pill {
+  border-radius: 999px;
+  border: 1px solid #c5b5a3;
+  padding: 0 0.35rem;
+  font-size: 0.68rem;
+}
+
+.month-note {
+  margin-top: 0.3rem;
+  font-size: 0.76rem;
+  line-height: 1.7;
+  white-space: pre-line;
+}
+
+/* 中间圆点 */
+.month-dot {
+  position: absolute;
+  left: calc(36% - 0.35rem);
+  top: 1.25rem;
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 50%;
+  border: 1px solid #8d7f6f;
+  background: #e7ddcf;
+}
+
+/* 右侧正文 */
+.month-right {
+  width: 64%;
+  padding-left: 0.9rem;
+}
+
+.month-write {
+  font-size: 0.8rem;
+  line-height: 1.9;
+  white-space: pre-line;
+}
+
+/* ---------- 三套布局差异 ---------- */
+
+/* 杂志时间线版（默认）用上面的样式即可 */
+
+/* 海报块状版：不需要垂直线与圆点，月份块上下堆叠 */
+.poster.layout-poster .months-timeline::before {
+  display: none;
+}
+.poster.layout-poster .month-row {
+  flex-direction: column;
+}
+.poster.layout-poster .month-left,
+.poster.layout-poster .month-right {
+  width: 100%;
+  padding: 0;
+}
+.poster.layout-poster .month-left {
+  margin-bottom: 0.35rem;
+}
+.poster.layout-poster .month-dot {
+  display: none;
+}
+
+/* 简洁左右版：线更靠左一点，左列窄一点 */
+.poster.layout-stack .months-timeline::before {
+  left: 30%;
+}
+.poster.layout-stack .month-left {
+  width: 30%;
+}
+.poster.layout-stack .month-right {
+  width: 70%;
+}
+.poster.layout-stack .month-dot {
+  left: calc(30% - 0.35rem);
+}
+
+/* ---------- 落款区 ---------- */
+.poster-footer {
+  padding: 0.6rem 1.6rem 0.9rem;
+  border-top: 1px solid #d0c4b6;
+  font-size: 0.75rem;
+  color: #6a5b58;
+}
+
+.footer-line + .footer-line {
+  margin-top: 0.15rem;
+}
+
+/* ---------- 复古印章 ---------- */
+.poster-stamp {
+  position: absolute;
+  right: 1.4rem;
+  bottom: 2.8rem;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 1px solid #b67b6b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  text-align: center;
+  transform: rotate(-12deg);
+  opacity: 0.75;
+  pointer-events: none;
+  font-family: "Georgia", serif;
+}
+
+/* ---------- 主题切换，对海报也生效 ---------- */
+body.theme-vintage .poster {
+  background: #e7ddcf;
+  border-color: #d1c4b5;
+}
+body.theme-vintage .poster-header {
+  background: #556f61;
+}
+body.theme-vintage .months-title {
+  color: #6e5c4e;
+}
+body.theme-vintage .month-dot {
+  background: #e7ddcf;
+}
+
+body.theme-vintage-alt .poster {
+  background: #fdf4f7;
+  border-color: #e0b3c2;
+}
+body.theme-vintage-alt .poster-header {
+  background: #b65c7a;
+}
+body.theme-vintage-alt .months-title {
+  color: #b65c7a;
+}
+body.theme-vintage-alt .month-dot {
+  background: #fdf4f7;
+}
+
+/* ---------- 关键词封面卡片（隐藏在屏幕外） ---------- */
+.cover-poster {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  width: 600px;
+  height: 800px;
+  background: #f7efe6;
+  border-radius: 0.8rem;
+  border: 1px solid #d3c3b3;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cover-inner {
+  width: 80%;
+  text-align: center;
+}
+
+.cover-year {
+  font-family: "Georgia", serif;
+  font-size: 3rem;
+  letter-spacing: 0.25em;
+  color: #4b5c50;
+}
+
+.cover-title {
+  margin-top: 0.4rem;
+  font-size: 1rem;
+  letter-spacing: 0.18em;
+  color: #6a5b54;
+}
+
+.cover-author {
+  margin-top: 0.3rem;
+  font-size: 0.8rem;
+  color: #7b6a5e;
+}
+
+.cover-tags {
+  margin-top: 1.2rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem 0.8rem;
+}
+
+.cover-tag {
+  color: #4b4036;
+  font-weight: 500;
+}
+
+/* ---------- 响应式 ---------- */
+@media (max-width: 900px) {
+  .layout {
+    flex-direction: column;
+  }
+  .editor,
+  .preview {
+    width: 100%;
+  }
+  .preview {
+    padding: 1rem;
+  }
+  .poster {
+    max-width: 380px;
+  }
+}
 
 
 
