@@ -250,28 +250,44 @@ function renderPoster() {
 function renderCover() {
   const yearEl = document.getElementById("cover-year");
   const authorEl = document.getElementById("cover-author");
-  const tagsWrap = document.getElementById("cover-tags");
+  const quoteEl = document.getElementById("cover-quote");
+  const metaEl = document.getElementById("cover-meta");
 
-  yearEl.textContent = data.year || "2025";
-  authorEl.textContent = data.penName ? `by ${data.penName}` : "";
+  const year = data.year || "2025";
+  const pen = data.penName || "";
+  const words = data.totalWords || "";
 
-  tagsWrap.innerHTML = "";
-  const tags = collectAllTags();
-  if (!tags.length) return;
+  yearEl.textContent = year;
+  authorEl.textContent = pen ? `by ${pen}` : "";
 
-  const sizes = ["0.95rem", "1.05rem", "1.15rem", "1.25rem", "1.35rem"];
+  // 从年度总结里截一小段做封面文案
+  let ref = (data.reflection || "").trim();
+  let quote = "";
 
-  tags.forEach((t, idx) => {
-    const span = document.createElement("span");
-    span.className = "cover-tag";
-    const size = sizes[idx % sizes.length];
-    span.style.fontSize = size;
-    span.style.opacity = 0.85 + Math.random() * 0.15;
-    span.style.transform = `translateY(${(Math.random() - 0.5) * 6}px)`;
-    span.textContent = t;
-    tagsWrap.appendChild(span);
-  });
+  if (ref) {
+    // 按换行或句号/问号/感叹号切一段
+    const parts = ref.split(/[\n。？！!?]/).filter(Boolean);
+    quote = parts[0] || ref;
+    // 太长的话截一下
+    if (quote.length > 42) {
+      quote = quote.slice(0, 42) + "…";
+    }
+  } else {
+    // 没写总结就给一条默认文案
+    quote = "这一年，你写下了很多故事。";
+  }
+  quoteEl.textContent = quote;
+
+  // 底部 meta：笔名 + 字数
+  let meta = "";
+  if (pen) meta += `written by ${pen}`;
+  if (words) {
+    if (meta) meta += " · ";
+    meta += `words ${words}`;
+  }
+  metaEl.textContent = meta;
 }
+
 
 /* -------- 整体渲染 -------- */
 function renderAll() {
