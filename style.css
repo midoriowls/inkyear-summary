@@ -109,7 +109,8 @@ body.theme-vintage-alt {
 }
 
 input,
-textarea {
+textarea,
+select {
   width: 100%;
   border-radius: 0.4rem;
   border: 1px solid #c8bbac;
@@ -124,7 +125,8 @@ textarea {
 }
 
 input:focus,
-textarea:focus {
+textarea:focus,
+select:focus {
   border-color: #4b5c50;
   box-shadow: 0 0 0 1px rgba(75, 92, 80, 0.15);
 }
@@ -172,39 +174,95 @@ textarea:focus {
   cursor: pointer;
 }
 
-/* ---------- 海报整体 ---------- */
+/* ---------- 海报整体：长纸张，无固定高度 ---------- */
 .poster {
   width: 100%;
   max-width: 460px;
   background: #e7ddcf;
   border-radius: 0.7rem;
   box-shadow: 0 10px 26px rgba(0, 0, 0, 0.18);
-  border: 1px solid #d1c4b5;  /* 柔和浅边框，去掉红边 */
-  overflow: hidden;            /* 重要：让虚线和内容都被卡在卡片内部 */
+  border: 1px solid #d1c4b5;
+  overflow: hidden; /* 让虚线不跑出卡片外 */
+  display: flex;
+  flex-direction: column;
 }
 
-/* 顶部色条 */
+/* ========== 头部：三种风格共用的结构 ========== */
+
 .poster-header {
-  padding: 0.5rem 1.4rem;
+  padding: 0.75rem 1.6rem 0.6rem;
   background: #556f61;
   color: #f2eadf;
-  font-family: "Georgia", serif;
-  font-size: 0.9rem;
-  letter-spacing: 0.22em;
 }
 
-/* 标题与基本信息 */
+/* 文本行 */
+.header-line-1,
+.header-line-2,
+.header-line-3 {
+  margin: 0.1rem 0;
+}
+
+/* 样式 A：日系文库本 */
+.header-style-a .header-line-1 {
+  font-family: "Georgia", serif;
+  letter-spacing: 0.22em;
+  font-size: 0.82rem;
+  text-align: center;
+}
+.header-style-a .header-line-2 {
+  font-family: "STSong", "SimSun", serif;
+  letter-spacing: 0.2em;
+  font-size: 1.1rem;
+  text-align: center;
+}
+.header-style-a .header-line-3 {
+  font-size: 0.7rem;
+  text-align: center;
+  opacity: 0.85;
+}
+
+/* 样式 B：日系杂志 CUT */
+.header-style-b {
+  background: #5f7466;
+}
+.header-style-b .header-line-1 {
+  font-family: "Georgia", serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.4em;
+}
+.header-style-b .header-line-2 {
+  font-family: "Georgia", serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.4em;
+}
+.header-style-b .header-line-3 {
+  font-size: 0.7rem;
+  margin-top: 0.25rem;
+}
+
+/* 样式 C：英文报纸风 */
+.header-style-c {
+  background: #4d5f55;
+}
+.header-style-c .header-line-1 {
+  font-family: "Georgia", serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.header-style-c .header-line-2 {
+  font-family: "Georgia", serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+}
+.header-style-c .header-line-3 {
+  font-size: 0.7rem;
+  margin-top: 0.3rem;
+}
+
+/* ---------- 主体信息 ---------- */
 .poster-main {
   padding: 1.1rem 1.6rem 0.6rem;
-}
-
-.poster-title-cn {
-  font-family: "STSong", "SimSun", serif;
-  font-size: 1.3rem;
-  letter-spacing: 0.18em;
-  text-align: center;
-  margin-bottom: 0.8rem;
-  color: #513b38;
 }
 
 .poster-meta-row {
@@ -278,7 +336,7 @@ textarea:focus {
   padding-bottom: 1rem;
 }
 
-/* 垂直虚线：在卡片内部，从第一个月的顶部附近到最后一行底部附近 */
+/* 垂直虚线，只在卡片内部 */
 .months-timeline::before {
   content: "";
   position: absolute;
@@ -288,7 +346,7 @@ textarea:focus {
   border-left: 1px dotted #8d7f6f;
 }
 
-/* 每一行月份块 */
+/* 每一个月份块 */
 .month-row {
   position: relative;
   display: flex;
@@ -358,10 +416,22 @@ textarea:focus {
 .month-write {
   font-size: 0.8rem;
   line-height: 1.9;
-  white-space: pre-line; /* 保留空行 */
+  white-space: pre-line;
 }
 
-/* ---------- 主题切换对 poster 也生效 ---------- */
+/* ---------- 落款区 ---------- */
+.poster-footer {
+  padding: 0.6rem 1.6rem 0.9rem;
+  border-top: 1px solid #d0c4b6;
+  font-size: 0.75rem;
+  color: #6a5b58;
+}
+
+.footer-line + .footer-line {
+  margin-top: 0.15rem;
+}
+
+/* 主题切换对 poster 也生效 */
 body.theme-vintage-alt .poster {
   background: #ddd3c4;
   border-color: #c0b3a4;
@@ -387,6 +457,7 @@ body.theme-vintage-alt .poster-header {
     max-width: 380px;
   }
 }
+
 
 
 
