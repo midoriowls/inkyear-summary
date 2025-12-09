@@ -11,12 +11,12 @@ body {
   line-height: 1.7;
 }
 
-/* ---------- 主题背景（两种小差异复古样式） ---------- */
+/* ---------- 主题背景：两种复古味 ---------- */
 body.theme-vintage {
   background: #d9d1c6;
 }
 body.theme-vintage-alt {
-  background: #cfc6b8;
+  background: #c7c0b3;
 }
 
 /* ---------- 顶栏 ---------- */
@@ -172,15 +172,15 @@ textarea:focus {
   cursor: pointer;
 }
 
-/* ---------- 海报整体（关键：无固定高度、不裁切） ---------- */
+/* ---------- 海报整体 ---------- */
 .poster {
   width: 100%;
   max-width: 460px;
   background: #e7ddcf;
   border-radius: 0.7rem;
   box-shadow: 0 10px 26px rgba(0, 0, 0, 0.18);
-  border: 2px solid #c27160;
-  overflow: visible;           /* 高度随内容延伸 */
+  border: 1px solid #d1c4b5;  /* 柔和浅边框，去掉红边 */
+  overflow: hidden;            /* 重要：让虚线和内容都被卡在卡片内部 */
 }
 
 /* 顶部色条 */
@@ -260,7 +260,7 @@ textarea:focus {
   white-space: pre-line;
 }
 
-/* ---------- 月度时间线（方案 B 杂志排版） ---------- */
+/* ---------- 月度时间线（杂志排版 B） ---------- */
 .poster-months {
   padding: 0.6rem 1.6rem 1.4rem;
 }
@@ -278,13 +278,13 @@ textarea:focus {
   padding-bottom: 1rem;
 }
 
-/* 垂直虚线，靠左一些，给正文多空间 */
+/* 垂直虚线：在卡片内部，从第一个月的顶部附近到最后一行底部附近 */
 .months-timeline::before {
   content: "";
   position: absolute;
   left: 36%;
-  top: 0;
-  bottom: 0;
+  top: 0.4rem;
+  bottom: 0.4rem;
   border-left: 1px dotted #8d7f6f;
 }
 
@@ -361,7 +361,16 @@ textarea:focus {
   white-space: pre-line; /* 保留空行 */
 }
 
-/* ---------- 响应式（手机上上下排） ---------- */
+/* ---------- 主题切换对 poster 也生效 ---------- */
+body.theme-vintage-alt .poster {
+  background: #ddd3c4;
+  border-color: #c0b3a4;
+}
+body.theme-vintage-alt .poster-header {
+  background: #4b6358;
+}
+
+/* ---------- 响应式 ---------- */
 @media (max-width: 900px) {
   .layout {
     flex-direction: column;
@@ -378,6 +387,7 @@ textarea:focus {
     max-width: 380px;
   }
 }
+
 
 
 
