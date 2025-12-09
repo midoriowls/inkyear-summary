@@ -2,30 +2,26 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <title>写手年度总结 · Vintage Maker</title>
+  <title>写手年度总结 · 复古杂志版</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="style.css" />
-
-  <!-- 引入 html2canvas 用于 PNG 导出 -->
+  <!-- 导出 PNG -->
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 </head>
-
 <body class="theme-vintage">
-
   <header class="topbar">
     <div class="brand">
       <span class="brand-mark">✒</span>
-      <span class="brand-text">写手年度总结生成器</span>
+      <span class="brand-text">写手年度总结 · 复古杂志版</span>
     </div>
-
     <div class="actions">
-      <button class="btn" id="btn-theme">主题切换</button>
-      <button class="btn btn-primary" id="btn-download">导出 PNG</button>
+      <button id="btn-theme" class="btn">切换复古样式</button>
+      <button id="btn-download" class="btn btn-primary">导出 PNG</button>
     </div>
   </header>
 
   <main class="layout">
-    <!-- 输入区域 -->
+    <!-- 左侧表单 -->
     <section class="editor">
       <h2 class="section-title">基本信息</h2>
 
@@ -45,42 +41,42 @@
       </div>
 
       <div class="field">
-        <label>关键词</label>
+        <label>标签（空格或逗号分隔）</label>
         <input type="text" data-field="tags" placeholder="例：同人 年终 总结" />
       </div>
 
       <div class="field">
-        <label>年度感想</label>
-        <textarea data-field="reflection" rows="3"></textarea>
+        <label>年度总结（会放进上方小框）</label>
+        <textarea rows="4" data-field="reflection"></textarea>
       </div>
 
       <hr class="divider" />
 
-      <h2 class="section-title">每月写作记录（可选）</h2>
+      <h2 class="section-title">每月记录（可选填任意几个月）</h2>
 
       <form id="monthForm" class="month-form">
         <div class="field">
-          <label>月份（月名）</label>
-          <input id="monthName" placeholder="例：三月 / March" />
+          <label>月份（月名 / 中文）</label>
+          <input id="monthName" placeholder="例：MARCH / 三月" />
         </div>
 
         <div class="field">
-          <label>代表作（可选）</label>
+          <label>代表作 / 亮点（可选）</label>
           <input id="monthTitle" placeholder="例：《番外完结》" />
         </div>
 
         <div class="field">
-          <label>小关键词（可选）</label>
-          <input id="monthTags" placeholder="例：修文 开封府少侠" />
+          <label>本月关键词（可选）</label>
+          <input id="monthTags" placeholder="例：修文 通宵 少侠" />
         </div>
 
         <div class="field">
-          <label>本月写了什么（正文）</label>
+          <label>本月写了什么（正文，可长段，可空行）</label>
           <textarea id="monthWrite" rows="3"></textarea>
         </div>
 
         <div class="field">
-          <label>想说的话（左侧脚注）</label>
+          <label>想说的话（可选，小注脚放在左侧）</label>
           <textarea id="monthNote" rows="2"></textarea>
         </div>
 
@@ -88,38 +84,42 @@
       </form>
 
       <div id="monthList" class="month-list"></div>
-
     </section>
 
-    <!-- 预览区 -->
+    <!-- 右侧预览 -->
     <section class="preview">
       <div id="poster" class="poster">
-        <div class="poster-header">YEAR-END SUMMARY</div>
+        <!-- 顶部色条 -->
+        <div class="poster-header">
+          <div class="poster-header-en">YEAR-END SUMMARY</div>
+        </div>
 
+        <!-- 标题与基本信息 -->
         <div class="poster-main">
-          <div class="poster-title">文手年度总结</div>
+          <div class="poster-title-cn">文手年度总结</div>
 
-          <div class="info-row">
-            <div class="year" id="pv-year">2025</div>
-            <div class="meta">
+          <div class="poster-meta-row">
+            <div class="poster-year" id="pv-year">2025</div>
+            <div class="poster-meta">
               <div>Pen Name：<span id="pv-penName"></span></div>
               <div>Total Words：<span id="pv-totalWords"></span></div>
             </div>
           </div>
 
-          <div id="pv-tags" class="tags"></div>
+          <div class="poster-tags" id="pv-tags"></div>
 
-          <div class="reflection">
-            <div class="ref-title">This Year</div>
-            <div class="ref-text" id="pv-reflection"></div>
+          <!-- 年度总结小框 -->
+          <div class="summary-box">
+            <div class="summary-label">总结</div>
+            <div class="summary-text" id="pv-reflection"></div>
           </div>
         </div>
 
+        <!-- 月度记录 -->
         <div class="poster-months">
-          <div class="months-title">你的月度写作记录</div>
+          <div class="months-title">Monthly Notes</div>
           <div class="months-timeline" id="pv-months"></div>
         </div>
-
       </div>
     </section>
   </main>
@@ -127,4 +127,5 @@
   <script src="script.js"></script>
 </body>
 </html>
+
 
