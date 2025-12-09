@@ -148,13 +148,18 @@ function renderPoster() {
     data.reflection || "";
 
   // 标签
+  // 标签（只用顶部 tags，不再把每月的都汇总进来）
   const tagsWrap = document.getElementById("pv-tags");
   tagsWrap.innerHTML = "";
-  collectAllTags().forEach((t) => {
-    const span = document.createElement("span");
-    span.textContent = t;
-    tagsWrap.appendChild(span);
-  });
+  (data.tags || "")
+    .split(/[,，\s]+/)
+    .filter(Boolean)
+    .forEach((t) => {
+      const span = document.createElement("span");
+      span.textContent = t;
+      tagsWrap.appendChild(span);
+    });
+
 
   // 布局 class
   const poster = document.getElementById("poster");
