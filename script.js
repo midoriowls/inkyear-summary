@@ -5,10 +5,11 @@ const data = {
   totalWords: "",
   tags: "",
   reflection: "",
+  headerStyle: "a",  // a/b/c
   months: [] // {id, month, title, tags, write, note}
 };
 
-// 绑定基础字段
+/* 绑定基础文本字段（year / penName / totalWords / tags / reflection） */
 function bindBaseFields() {
   document.querySelectorAll("[data-field]").forEach((el) => {
     const key = el.dataset.field;
@@ -20,7 +21,17 @@ function bindBaseFields() {
   });
 }
 
-// 绑定月份表单
+/* 绑定头部样式下拉 */
+function bindHeaderStyle() {
+  const select = document.getElementById("headerStyle");
+  select.value = data.headerStyle;
+  select.addEventListener("change", () => {
+    data.headerStyle = select.value;
+    renderHeader();
+  });
+}
+
+/* 添加月份记录 */
 function bindMonthForm() {
   const form = document.getElementById("monthForm");
 
@@ -33,7 +44,7 @@ function bindMonthForm() {
     const write = document.getElementById("monthWrite").value;
     const note = document.getElementById("monthNote").value;
 
-    if (!month) return; // 没填月份就不加
+    if (!month) return; // 必须填月份
 
     data.months.push({
       id: Date.now() + Math.random(),
@@ -50,7 +61,7 @@ function bindMonthForm() {
   });
 }
 
-// 左侧月份列表
+/* 左侧月份列表 */
 function renderMonthList() {
   const list = document.getElementById("monthList");
   list.innerHTML = "";
@@ -73,8 +84,38 @@ function renderMonthList() {
   });
 }
 
-// 渲染海报
+/* 渲染头部三种样式 */
+function renderHeader() {
+  const header = document.getElementById("posterHeader");
+  const l1 = document.getElementById("headerLine1");
+  const l2 = document.getElementById("headerLine2");
+  const l3 = document.getElementById("headerLine3");
+  const year = data.year || "2025";
+
+  header.classList.remove("header-style-a", "header-style-b", "header-style-c");
+
+  if (data.headerStyle === "a") {
+    header.classList.add("header-style-a");
+    l1.textContent = "YEAR-END SUMMARY";
+    l2.textContent = "文手年度总结";
+    l3.textContent = `${year} · Annual Writing Review`;
+  } else if (data.headerStyle === "b") {
+    header.classList.add("header-style-b");
+    l1.textContent = "YEAR  END";
+    l2.textContent = "SUMMARY";
+    l3.textContent = `${year}`;
+  } else {
+    header.classList.add("header-style-c");
+    l1.textContent = "THE ANNUAL REVIEW OF LITERARY WORKS";
+    l2.textContent = `— ${year} —`;
+    l3.textContent = "Fanfic & Original Writing";
+  }
+}
+
+/* 渲染整张海报（除了 header 已抽出） */
 function renderPoster() {
+  renderHeader();
+
   // 基本信息
   document.getElementById("pv-year").textContent = data.year || "";
   document.getElementById("pv-penName").textContent = data.penName || "";
@@ -82,7 +123,7 @@ function renderPoster() {
   document.getElementById("pv-reflection").textContent =
     data.reflection || "";
 
-  // 年度标签
+  // 标签
   const tagsWrap = document.getElementById("pv-tags");
   tagsWrap.innerHTML = "";
   (data.tags || "")
@@ -104,7 +145,7 @@ function renderPoster() {
     const row = document.createElement("div");
     row.className = "month-row";
 
-    // 左列：月份 + 标题 + tag + note
+    // 左列
     const left = document.createElement("div");
     left.className = "month-left";
 
@@ -146,7 +187,7 @@ function renderPoster() {
     const dot = document.createElement("div");
     dot.className = "month-dot";
 
-    // 右列：正文
+    // 右列正文
     const right = document.createElement("div");
     right.className = "month-right";
     const writeEl = document.createElement("div");
@@ -159,9 +200,17 @@ function renderPoster() {
     row.appendChild(right);
     container.appendChild(row);
   });
+
+  // 落款区
+  const footerWritten = document.getElementById("pv-footer-written");
+  const footerDesigned = document.getElementById("pv-footer-designed");
+  footerWritten.textContent = data.penName
+    ? `written by ${data.penName}`
+    : "";
+  footerDesigned.textContent = "card designed by Morinorane";
 }
 
-// 主题切换：两个 class 来回切
+/* 主题配色切换 */
 function bindThemeToggle() {
   const btn = document.getElementById("btn-theme");
   btn.addEventListener("click", () => {
@@ -175,7 +224,7 @@ function bindThemeToggle() {
   });
 }
 
-// 导出 PNG：加一个兜底提示，防止 html2canvas 没加载
+/* 导出 PNG */
 function bindDownload() {
   const btn = document.getElementById("btn-download");
   btn.addEventListener("click", () => {
@@ -194,20 +243,22 @@ function bindDownload() {
       link.click();
     }).catch((err) => {
       console.error(err);
-      alert("导出时出了点小问题，可以再试一次，或者稍后再试。");
+      alert("导出时出了点问题，可以稍后再试一次。");
     });
   });
 }
 
-// 初始化
+/* 初始化 */
 document.addEventListener("DOMContentLoaded", () => {
   bindBaseFields();
+  bindHeaderStyle();
   bindMonthForm();
   bindThemeToggle();
   bindDownload();
   renderPoster();
   renderMonthList();
 });
+
 
 
 
