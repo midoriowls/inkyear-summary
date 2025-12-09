@@ -235,7 +235,7 @@ function renderPoster() {
   footerWritten.textContent = data.penName
     ? `written by ${data.penName}`
     : "";
-  footerDesigned.textContent = "card designed by Morinorane";
+  footerDesigned.textContent = "card designed by Morinorane · collaborated with ChatGPT";
 
   // 印章
   const stamp = document.getElementById("pv-stamp");
