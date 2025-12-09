@@ -5,7 +5,7 @@
   <title>写手年度总结 · 复古杂志版</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="style.css" />
-  <!-- 导出 PNG -->
+  <!-- 导出 PNG 用 -->
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 </head>
 <body class="theme-vintage">
@@ -16,7 +16,10 @@
     </div>
     <div class="actions">
       <button id="btn-theme" class="btn">切换配色</button>
-      <button id="btn-download" class="btn btn-primary">导出 PNG</button>
+      <button id="btn-download-long" class="btn btn-primary">导出长图</button>
+      <button id="btn-download-xhs" class="btn">导出小红书分图</button>
+      <button id="btn-download-cover" class="btn">导出封面</button>
+      <button id="btn-share" class="btn">复制分享链接</button>
     </div>
   </header>
 
@@ -59,6 +62,15 @@
         </select>
       </div>
 
+      <div class="field">
+        <label>版式布局</label>
+        <select id="layoutStyle">
+          <option value="magazine">杂志时间线版（当前）</option>
+          <option value="poster">海报块状版</option>
+          <option value="stack">简洁左右版</option>
+        </select>
+      </div>
+
       <hr class="divider" />
 
       <h2 class="section-title">每月记录（可选填任意几个月）</h2>
@@ -97,7 +109,7 @@
 
     <!-- 右侧预览：长海报 -->
     <section class="preview">
-      <div id="poster" class="poster">
+      <div id="poster" class="poster layout-magazine">
         <!-- 头部：支持多种样式 -->
         <div class="poster-header header-style-a" id="posterHeader">
           <div class="header-line-1" id="headerLine1">YEAR-END SUMMARY</div>
@@ -130,10 +142,23 @@
           <div class="months-timeline" id="pv-months"></div>
         </div>
 
+        <!-- 复古印章 -->
+        <div class="poster-stamp" id="pv-stamp"></div>
+
         <!-- 落款区 -->
         <div class="poster-footer">
           <div class="footer-line" id="pv-footer-written"></div>
           <div class="footer-line" id="pv-footer-designed"></div>
+        </div>
+      </div>
+
+      <!-- 关键词封面卡片（平时不显示，在屏幕外，用于导出封面） -->
+      <div id="coverPoster" class="cover-poster">
+        <div class="cover-inner">
+          <div class="cover-year" id="cover-year">2025</div>
+          <div class="cover-title">文手年度关键词</div>
+          <div class="cover-author" id="cover-author">by 不羡仙</div>
+          <div class="cover-tags" id="cover-tags"></div>
         </div>
       </div>
     </section>
@@ -142,6 +167,7 @@
   <script src="script.js"></script>
 </body>
 </html>
+
 
 
 
