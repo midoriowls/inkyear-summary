@@ -12,11 +12,14 @@ body {
 }
 
 /* ---------- 主题背景：两种复古味 ---------- */
+/* 默认：你现在这套奶咖×墨绿 */
 body.theme-vintage {
   background: #d9d1c6;
 }
+
+/* 另一套：明显粉调日系复古色，一眼就看出区别 */
 body.theme-vintage-alt {
-  background: #c7c0b3;
+  background: #f1e4ea;
 }
 
 /* ---------- 顶栏 ---------- */
@@ -68,9 +71,11 @@ body.theme-vintage-alt {
 }
 
 /* ---------- 布局 ---------- */
+/* ★ 改成 min-height，不再强行卡死等于一屏高度，海报能跟着内容整体变长 */
 .layout {
   display: flex;
-  height: calc(100vh - 3rem);
+  align-items: flex-start;
+  min-height: calc(100vh - 3rem);
 }
 
 .editor {
@@ -81,12 +86,13 @@ body.theme-vintage-alt {
   overflow-y: auto;
 }
 
+/* ★ preview 不再单独滚动，交给整个页面滚动，海报高度不会被容器卡住 */
 .preview {
   width: 58%;
   padding: 1.2rem;
   display: flex;
   justify-content: center;
-  overflow-y: auto;
+  align-items: flex-start;
 }
 
 /* ---------- 表单 ---------- */
@@ -175,6 +181,7 @@ select:focus {
 }
 
 /* ---------- 海报整体：长纸张，无固定高度 ---------- */
+/* ★ 这里是关键：display:block + height:auto，不再用 flex 容器当卡片本体 */
 .poster {
   width: 100%;
   max-width: 460px;
@@ -182,9 +189,9 @@ select:focus {
   border-radius: 0.7rem;
   box-shadow: 0 10px 26px rgba(0, 0, 0, 0.18);
   border: 1px solid #d1c4b5;
-  overflow: hidden; /* 让虚线不跑出卡片外 */
-  display: flex;
-  flex-direction: column;
+  overflow: hidden;      /* 虚线不会露到外面 */
+  display: block;
+  height: auto;          /* 明确声明由内容决定高度 */
 }
 
 /* ========== 头部：三种风格共用的结构 ========== */
@@ -195,7 +202,6 @@ select:focus {
   color: #f2eadf;
 }
 
-/* 文本行 */
 .header-line-1,
 .header-line-2,
 .header-line-3 {
@@ -431,20 +437,36 @@ select:focus {
   margin-top: 0.15rem;
 }
 
-/* 主题切换对 poster 也生效 */
+/* ---------- 主题切换，对海报也生效（颜色差异拉大） ---------- */
+body.theme-vintage .poster {
+  background: #e7ddcf;
+  border-color: #d1c4b5;
+}
+body.theme-vintage .poster-header {
+  background: #556f61;
+}
+body.theme-vintage .months-title {
+  color: #6e5c4e;
+}
+
 body.theme-vintage-alt .poster {
-  background: #ddd3c4;
-  border-color: #c0b3a4;
+  background: #fdf4f7;
+  border-color: #e0b3c2;
 }
 body.theme-vintage-alt .poster-header {
-  background: #4b6358;
+  background: #b65c7a;
+}
+body.theme-vintage-alt .months-title {
+  color: #b65c7a;
+}
+body.theme-vintage-alt .month-dot {
+  background: #fdf4f7;
 }
 
 /* ---------- 响应式 ---------- */
 @media (max-width: 900px) {
   .layout {
     flex-direction: column;
-    height: auto;
   }
   .editor,
   .preview {
@@ -457,6 +479,7 @@ body.theme-vintage-alt .poster-header {
     max-width: 380px;
   }
 }
+
 
 
 
