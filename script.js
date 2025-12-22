@@ -297,18 +297,37 @@ function renderAll() {
 }
 
 /* -------- 主题切换 -------- */
+/* -------- 主题切换（3 套循环） -------- */
 function bindThemeToggle() {
   const btn = document.getElementById("btn-theme");
+
+  const themes = [
+    "theme-vintage",      // 原绿
+    "theme-vintage-alt",  // 粉
+    "theme-wine"          // 酒红 #4A0000
+  ];
+
   btn.addEventListener("click", () => {
-    if (document.body.classList.contains("theme-vintage")) {
-      document.body.classList.remove("theme-vintage");
-      document.body.classList.add("theme-vintage-alt");
-    } else {
-      document.body.classList.remove("theme-vintage-alt");
-      document.body.classList.add("theme-vintage");
+    const body = document.body;
+
+    // 找到当前主题
+    let currentIndex = themes.findIndex(t =>
+      body.classList.contains(t)
+    );
+
+    // 如果一个都没有（极端情况），默认从第一个开始
+    if (currentIndex === -1) {
+      body.classList.add(themes[0]);
+      return;
     }
+
+    // 切到下一个
+    body.classList.remove(themes[currentIndex]);
+    const nextIndex = (currentIndex + 1) % themes.length;
+    body.classList.add(themes[nextIndex]);
   });
 }
+
 
 /* -------- 导出：长图 -------- */
 function exportLongImage() {
