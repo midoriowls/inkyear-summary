@@ -550,6 +550,94 @@ body.theme-vintage-alt .month-dot {
   background: #fdf4f7;
 }
 
+/* ==============================
+   主题三：Wine / 深红复古
+   ============================== */
+
+body.theme-wine {
+  background: #d9c9c3; /* 比原绿稍暖的纸张色 */
+}
+
+/* 海报主体 */
+body.theme-wine .poster {
+  background: #f1e6e1;
+  border-color: #c9a9a1;
+}
+
+/* 头部主色（原绿色全部替换） */
+body.theme-wine .poster-header {
+  background: #4A0000;
+  color: #f4e9e6;
+}
+
+/* 顶栏 */
+body.theme-wine .topbar {
+  background: #e8d6cf;
+  border-bottom-color: #c9a9a1;
+}
+
+body.theme-wine .brand,
+body.theme-wine .brand-mark {
+  color: #4A0000;
+  border-color: #4A0000;
+}
+
+/* 按钮 */
+body.theme-wine .btn-primary {
+  background: #4A0000;
+  border-color: #4A0000;
+  color: #fdf7f4;
+}
+
+body.theme-wine .btn {
+  border-color: #4A0000;
+}
+
+/* 年份、标题等强调色 */
+body.theme-wine .poster-year {
+  color: #4A0000;
+}
+
+body.theme-wine .months-title {
+  color: #4A0000;
+}
+
+/* 时间线圆点 */
+body.theme-wine .month-dot {
+  background: #f1e6e1;
+  border-color: #4A0000;
+}
+
+/* 时间线竖线 */
+body.theme-wine .months-timeline::before {
+  border-left-color: #4A0000;
+}
+
+/* 标签 */
+body.theme-wine .poster-tags span,
+body.theme-wine .month-tag-pill {
+  border-color: #4A0000;
+  color: #4A0000;
+}
+
+/* 引用 / 年度总结框 */
+body.theme-wine .summary-box {
+  border-color: #b88f86;
+  background: rgba(248, 235, 230, 0.7);
+}
+
+/* 印章 */
+body.theme-wine .poster-stamp {
+  border-color: #4A0000;
+  color: #4A0000;
+  box-shadow: 0 0 0 1px rgba(74, 0, 0, 0.25);
+}
+
+body.theme-wine .poster-stamp::before {
+  border-color: rgba(74, 0, 0, 0.7);
+}
+
+
 /* ---------- 关键词封面卡片 ---------- */
 /* ---------- 封面：文库本风 ---------- */
 .cover-poster {
